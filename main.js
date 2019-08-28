@@ -1,5 +1,5 @@
 
-const api = "https://antischwitzomat.glitch.me/temperatures";
+const api = "https://antischwitzomat.glitch.me/measurements";
 const tempRequest = new XMLHttpRequest();
 tempRequest.onload = onDataReceived;
 tempRequest.open('get', api);
