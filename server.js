@@ -24,7 +24,7 @@ var db = new sqlite3.Database(dbFile);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(function () {
     if (!exists) {
-        db.run('CREATE TABLE Measurements (date DATETIME, temperature DECIMAL, humidity DECIMAL, pressure, DECIMAL)');
+        db.run('CREATE TABLE Measurements (time DATETIME, temperature DECIMAL, humidity DECIMAL, pressure, DECIMAL)');
     }
     else {
         db.each('SELECT * from Measurements', function (err, row) {
@@ -54,7 +54,7 @@ app.post('/measurements', function (request, response) {
     var hum = request.body.humidity;
     var pres = request.body.pressure;
     addNewMeasurement(sqllite_date, temp, hum, pres);
-    response.send("saved " + sqllite_date + " " + temp);
+    response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
 
 });
 
@@ -64,9 +64,10 @@ app.delete('/measurements', function (request, response) {
 });
 
 function addNewMeasurement(time, temperature, humidity, pressure) {
-    console.log("creating time: " + time + " temperature: " + temperature)
+    const dataString = '"' + time + '", "' + temperature +  '", "' + humidity + '", "' + pressure +  '"';
+    console.log("saving: " + dataString);
     db.serialize(function () {
-        db.run('INSERT INTO Measurements (time, temperature) VALUES ("' + time + '", "' + temperature + '")');
+        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure) VALUES ('+ dataString + ')');
     });
 }
 

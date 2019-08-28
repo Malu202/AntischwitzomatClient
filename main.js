@@ -1,29 +1,31 @@
-
 const api = "https://antischwitzomat.glitch.me/measurements";
 const tempRequest = new XMLHttpRequest();
 tempRequest.onload = onDataReceived;
 tempRequest.open('get', api);
 tempRequest.send();
 
-const body = document.getElementById("test");
+const log = document.getElementById("output");
 
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
     for (var i = 0; i < response.length; i++) {
-        body.innerHTML += response[i].time + " " + response[i].temperature + "°C" /*.dream*/ + '<br />';
+        log.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + '<br />';
     }
     console.log(response)
 }
 
-const time = document.getElementById("time");
 const temp = document.getElementById("temp");
+const hum = document.getElementById("hum");
+const pres = document.getElementById("pres");
+
 const sendButton = document.getElementById("send");
 const deleteButton = document.getElementById("delete");
 
 sendButton.onclick = function () {
     var data = JSON.stringify({
-        time: time.value,
-        temperature: temp.value
+        temperature: temp.value,
+        humidity: hum.value,
+        pressure: pres.value
     });
     console.log("sending " + data)
     const tempSubmit = new XMLHttpRequest();
@@ -34,13 +36,12 @@ sendButton.onclick = function () {
 }
 
 deleteButton.onclick = function () {
-    console.log("ddeleting")
+    console.log("deleting")
     const tempDelete = new XMLHttpRequest();
     tempDelete.open('delete', api);
     tempDelete.onload = refresh;
     tempDelete.send();
 }
-
 
 function refresh() {
     window.location.replace(window.location.pathname + window.location.search + window.location.hash);
