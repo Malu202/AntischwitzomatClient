@@ -24,15 +24,15 @@ var db = new sqlite3.Database(dbFile);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(function () {
     if (!exists) {
-        db.run('CREATE TABLE Measurements (time DATETIME, temperature DECIMAL, humidity DECIMAL, pressure, DECIMAL)');
+        db.run('CREATE TABLE Measurements (time DATETIME, temperature DECIMAL, humidity DECIMAL, pressure DECIMAL)');
     }
-    else {
-        db.each('SELECT * from Measurements', function (err, row) {
-            if (row) {
-                console.log('record:', row);
-            }
-        });
-    }
+    // else {
+    //     db.each('SELECT * from Measurements', function (err, row) {
+    //         if (row) {
+    //             console.log('record:', row);
+    //         }
+    //     });
+    // }
 });
 
 app.get('/', function (request, response) {

@@ -5,44 +5,69 @@ tempRequest.open('get', api);
 tempRequest.send();
 
 const log = document.getElementById("output");
+const tempCanvas = document.getElementById("tempCanvas");
 
+var plot;
+
+const timeLabels = [];
+const times = [];
+const temps = [];
+const hums = [];
+const press = [];
+const win = this.window;
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
+
     for (var i = 0; i < response.length; i++) {
-        log.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + '<br />';
+        const date = (new Date(response[i].time));
+
+        times.push((date.getTime() / 1000));
+        temps.push(response[i].temperature);
+        hums.push(response[i].humidity);
+        press.push(response[i].pressure);
     }
-    console.log(response)
-}
 
-const temp = document.getElementById("temp");
-const hum = document.getElementById("hum");
-const pres = document.getElementById("pres");
+    for (var i = 0; i < response.length; i += response.length - 1) {
+        const date = (new Date(response[i].time));
+        const time = date.getHours() + ":" + date.getMinutes();
+        timeLabels.push(time);
+    }
 
-const sendButton = document.getElementById("send");
-const deleteButton = document.getElementById("delete");
+    const timeLabelCount = 4;
+    const plottedTime = (times[times.length - 1] - times[0]) * 1000;
+    const stepSize = plottedTime / (timeLabelCount - 1);
+    for (var i = 1; i < timeLabelCount - 1; i++) {
+        const labelDate = new Date((times[0] * 1000 + stepSize * i));
+        timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
+    }
+    plot = new Plot(tempCanvas, {
+        xAxisSize: 0.08,
+        yAxisSize: 0.08,
+        // topMargin: 0.05,
+        // rightMargin: 0.05,
+        // xAxisLabelMaxDecimals: 1,
+        // yAxisLabelMaxDecimals: 3,
+        yAxisLabelSuffix: "° ",
+        // yAxisLabelPrefix: "",
+        // xAxisLabelSuffix: "",
+        // xAxisLabelPrefix: "",
+        // xAxisMaxLabels: 11,
+        // yAxisMaxLabels: 15,
+        // drawGridLineX: true,
+        // drawGridLineY: true,
+        // preferredLabelStepsX: [1, 2, 2.5, 5],
+        // preferredLabelStepsY: [1, 2, 2.5, 5],
+        xLabelNames: timeLabels,
 
-sendButton.onclick = function () {
-    var data = JSON.stringify({
-        temperature: temp.value,
-        humidity: hum.value,
-        pressure: pres.value
+        graphs: [
+            {
+                x: times,
+                y: temps,
+                xHighlight: times,
+                yHighlight: temps
+            }
+        ]
     });
-    console.log("sending " + data)
-    const tempSubmit = new XMLHttpRequest();
-    tempSubmit.open('post', api);
-    tempSubmit.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    tempSubmit.onload = refresh;
-    tempSubmit.send(data);
+    plot.draw();
 }
 
-deleteButton.onclick = function () {
-    console.log("deleting")
-    const tempDelete = new XMLHttpRequest();
-    tempDelete.open('delete', api);
-    tempDelete.onload = refresh;
-    tempDelete.send();
-}
-
-function refresh() {
-    window.location.replace(window.location.pathname + window.location.search + window.location.hash);
-}
