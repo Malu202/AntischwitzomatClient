@@ -15,21 +15,22 @@
     <div class="mdc-top-app-bar mdc-elevation--z2">
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
                 <span class="mdc-top-app-bar__title">Antischwitzomat</span>
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                    <a class="mdc-icon-button material-icons mdc-top-app-bar__action-item--unbounded" href="./debug.html">build</a>
+                  </section>
             </section>
         </div>
     </div>
-
-    <div class="mdc-top-app-bar--fixed-adjust" id="dashboard">
-        <div class="mdc-card gauges" id="gauges">
-            <div id="tempGauge" class="mdc-card"></div>
-            <div id="humGauge"></div>
-            <div id="presGauge"></div>
-
+    <div class="mdc-top-app-bar--fixed-adjust" id="content">
+        <div  id="dashboard">
+            <div class="mdc-card gauges" id="gauges">
+                <div id="tempGauge"></div>
+                <div id="humGauge"></div>
+                <div id="presGauge"></div>
+            </div>
+            <div id="tempPlot" class="mdc-card"></div>
         </div>
-        <div id="tempPlot" class="mdc-card"></div>
-        <a id="debug" href="./debug.html">debug</a>
     </div>
 </body>
 <script src="./lib/gauge.min.js"></script>

@@ -654,19 +654,26 @@ body {
   height: 100%;
   width: 100%; }
 
+#content {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%; }
+
 #dashboard {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   height: 100%;
-  width: 100%; }
+  width: auto;
+  padding: 16px; }
 
 .gauges {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  flex: 1 1 1px; }
+  flex: 1 1 1px;
+  margin-bottom: 16px; }
 
 #gauges {
   display: none; }
@@ -677,14 +684,5 @@ body {
 .gauges * {
   flex: 1 1 1px; }
 
-#tempGauge,
-#humGauge,
-#presGauge {
-  /* height: 100px;
-    width: 100px; */ }
-
 #tempPlot {
-  flex: 8 1 1px;
-  overflow: hidden;
-  /* height: 400px;
-    width: 600px; */ }
+  flex: 8 1 1px; }
