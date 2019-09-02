@@ -6,10 +6,7 @@ tempRequest.send();
 
 const log = document.getElementById("output");
 const tempCanvas = document.getElementById("tempPlot");
-// const tempGauge = document.getElementById("tempGauge");
-// const humGauge = document.getElementById("humGauge");
-// const presGauge = document.getElementById("presGauge");
-const body = document.getElementsByTagName("body")[0];
+const dashboardDiv = document.getElementById("dashboard");
 
 
 const timeLabels = [];
@@ -66,36 +63,29 @@ function onDataReceived(data) {
             }
         ]
     })).draw();
-
-    
-
-    // const currentTemp = temps[temps.length - 1];
-    // const gauge1 = new Gauge(tempGauge, 5, currentTemp + "°", 5, 40, "#fff", "#000");
-    // gauge1.animateValue(currentTemp, currentTemp + "°", 800)
-
-    // const currentHum = hums[hums.length - 1];
-    // const gauge2 = new Gauge(humGauge, 5, currentHum + "%", 30, 100, "#fff", "#000");
-    // gauge2.animateValue(currentHum, currentHum + "%", 800)
-
-    // const currentPres = press[press.length - 1];
-    // const gauge3 = new Gauge(presGauge, 5, currentPres + " mbar", 1000, 100000, "#fff", "#000");
-    // gauge3.animateValue(currentPres, currentPres + " mbar", 800)
-
-
 }
+
+const gaugesBlueprint = document.getElementById("gauges");
+const tempGaugeBlueprint = document.getElementById("tempGauge");
+const humGaugeBlueprint = document.getElementById("humGauge")
+const presGaugeBlueprint = document.getElementById("presGauge")
+
 
 function addGaugePanel(temp, hum, press) {
     const parent = document.createElement("div");
-    parent.classList = "gauges"
+    parent.classList = gaugesBlueprint.classList;
 
     const tempDiv = document.createElement("div");
+    tempDiv.classList = tempGaugeBlueprint.classList;
     const humDiv = document.createElement("div");
+    humDiv.classList = humGaugeBlueprint.classList;
     const pressDiv = document.createElement("div");
+    pressDiv.classList = presGaugeBlueprint.classList;
 
     parent.appendChild(tempDiv);
     parent.appendChild(humDiv);
     parent.appendChild(pressDiv);
-    body.insertBefore(parent, body.firstChild);
+    dashboardDiv.insertBefore(parent, dashboardDiv.firstChild);
 
     const tempGauge = new Gauge(tempDiv, 5, temp + "°", 5, 40, "#fff", "#000");
     tempGauge.animateValue(temp, temp + "°", 800)

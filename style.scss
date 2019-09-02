@@ -1,0 +1,60 @@
+$mdc-theme-primary: rgb(31, 90, 33);
+$mdc-theme-secondary: #feeae6;
+$mdc-theme-on-primary: #fff;
+$mdc-theme-on-secondary: #fff;
+
+@import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/icon-button/mdc-icon-button";
+@import "@material/elevation/mdc-elevation";
+@import "@material/card/mdc-card";
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#dashboard {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%;
+    width: 100%;
+}
+
+.gauges {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex: 1 1 1px;
+}
+
+#gauges {
+    display: none;
+}
+
+#debug {
+    flex: 0 0 1px;
+}
+
+.gauges * {
+    flex: 1 1 1px;
+}
+
+#tempGauge,
+#humGauge,
+#presGauge {
+    /* height: 100px;
+    width: 100px; */
+}
+
+#tempPlot {
+    flex: 8 1 1px;
+    overflow: hidden;
+    /* height: 400px;
+    width: 600px; */
+}

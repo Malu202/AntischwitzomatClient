@@ -5,21 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Antischwitzomat</title>
 </head>
 
 <body>
-    <!-- <canvas id="tempCanvas" width="600" height="500"></canvas> -->
-    <div class="gauges" id="gauges">
-        <div id="tempGauge"></div>
-        <div id="humGauge"></div>
-        <div id="presGauge"></div>
-
+    <div class="mdc-top-app-bar mdc-elevation--z2">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
+                <span class="mdc-top-app-bar__title">Antischwitzomat</span>
+            </section>
+        </div>
     </div>
-    <div id="tempPlot"></div>
 
-    <a id="debug" href="./debug.html">debug</a>
+    <div class="mdc-top-app-bar--fixed-adjust" id="dashboard">
+        <div class="mdc-card gauges" id="gauges">
+            <div id="tempGauge" class="mdc-card"></div>
+            <div id="humGauge"></div>
+            <div id="presGauge"></div>
+
+        </div>
+        <div id="tempPlot" class="mdc-card"></div>
+        <a id="debug" href="./debug.html">debug</a>
+    </div>
 </body>
 <script src="./lib/gauge.min.js"></script>
 <script src="./lib/plot.min.js"></script>

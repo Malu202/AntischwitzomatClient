@@ -1,0 +1,32 @@
+{
+  "name": "antischwitzomatclient",
+  "version": "0.1.0",
+  "description": "[testing client](https://malu202.github.io/AntischwitzomatClient/) for database hosted on glitch.com",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Malu202/AntischwitzomatClient.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Malu202/AntischwitzomatClient/issues"
+  },
+  "homepage": "https://github.com/Malu202/AntischwitzomatClient#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.0.2"
+  },
+  "dependencies": {
+    "@material/card": "^3.1.0",
+    "@material/elevation": "^3.1.0",
+    "@material/top-app-bar": "^3.1.0"
+  }
+}
