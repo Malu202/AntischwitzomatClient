@@ -1,45 +1,52 @@
 const api = "https://antischwitzomat.glitch.me/measurements";
-const tempRequest = new XMLHttpRequest();
-tempRequest.onload = onDataReceived;
-tempRequest.open('get', api);
-tempRequest.send();
+var ids = [undefined];
 
 const log = document.getElementById("output");
 const tempCanvas = document.getElementById("tempPlot");
 const dashboardDiv = document.getElementById("dashboard");
 
+const weatherStations = {};
 
-const timeLabels = [];
-const times = [];
-const temps = [];
-const hums = [];
-const press = [];
+var gaugePanels = [];
+addPanels(ids.length);
+
+const tempRequest = new XMLHttpRequest();
+tempRequest.onload = onDataReceived;
+tempRequest.open('get', api);
+tempRequest.send();
+
 
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
-    
-    for (var i = 0; i < response.length; i++) {
-        const date = (new Date(response[i].time));
-        
-        times.push((date.getTime() / 1000));
-        temps.push(response[i].temperature);
-        hums.push(response[i].humidity);
-        press.push(response[i].pressure);
+
+    for (var i = 0; i < ids.length; i++) {
+        weatherStations[ids[i]] = new WeatherStation();
     }
-    addGaugePanel(temps[temps.length - 1], hums[hums.length - 1], press[press.length - 1]);
-    
+    for (var i = 0; i < response.length; i++) {
+        const station = weatherStations[response[i].id];
+        if (station == undefined) continue;
+        const date = (new Date(response[i].time));
+        station.times.push((date.getTime() / 1000));
+        station.temps.push(response[i].temperature);
+        station.hums.push(response[i].humidity);
+        station.press.push(response[i].pressure);
+    }
+    for (var i = ids.length - 1; i >= 0; i--) {
+        weatherStations[ids[i]].addGaugePanel(i);
+    }
+
     for (var i = 0; i < response.length; i += response.length - 1) {
         const date = (new Date(response[i].time));
         const time = date.getHours() + ":" + date.getMinutes();
-        timeLabels.push(time);
+        weatherStations[ids[0]].timeLabels.push(time);
     }
-    
+
     const timeLabelCount = 4;
-    const plottedTime = (times[times.length - 1] - times[0]) * 1000;
+    const plottedTime = (weatherStations[ids[0]].times[weatherStations[ids[0]].times.length - 1] - weatherStations[ids[0]].times[0]) * 1000;
     const stepSize = plottedTime / (timeLabelCount - 1);
     for (var i = 1; i < timeLabelCount - 1; i++) {
-        const labelDate = new Date((times[0] * 1000 + stepSize * i));
-        timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
+        const labelDate = new Date((weatherStations[ids[0]].times[0] * 1000 + stepSize * i));
+        weatherStations[ids[0]].timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
     }
     (new Plot(tempCanvas, {
         xAxisSize: 0.08,
@@ -52,40 +59,37 @@ function onDataReceived(data) {
         drawGridLineX: false,
         drawGridLineY: false,
         // preferredLabelStepsY: [1, 2, 2.5, 5],
-        xLabelNames: timeLabels,
-        
+        xLabelNames: weatherStations[ids[0]].timeLabels,
+
         graphs: [
             {
-                x: times,
-                y: temps,
-                xHighlight: times,
-                yHighlight: temps
+                x: weatherStations[ids[0]].times,
+                y: weatherStations[ids[0]].temps,
+                xHighlight: weatherStations[ids[0]].times,
+                yHighlight: weatherStations[ids[0]].temps
             }
         ]
     })).draw();
 }
 
-const gaugesBlueprint = document.getElementById("gauges");
-const tempGaugeBlueprint = document.getElementById("tempGauge");
-const humGaugeBlueprint = document.getElementById("humGauge")
-const presGaugeBlueprint = document.getElementById("presGauge")
 
 
-function addGaugePanel(temp, hum, press) {
-    const parent = document.createElement("div");
-    parent.classList = gaugesBlueprint.classList;
+function WeatherStation() {
+    this.timeLabels = [];
+    this.times = [];
+    this.temps = [];
+    this.hums = [];
+    this.press = [];
+}
 
-    const tempDiv = document.createElement("div");
-    tempDiv.classList = tempGaugeBlueprint.classList;
-    const humDiv = document.createElement("div");
-    humDiv.classList = humGaugeBlueprint.classList;
-    const pressDiv = document.createElement("div");
-    pressDiv.classList = presGaugeBlueprint.classList;
+WeatherStation.prototype.addGaugePanel = function (position) {
+    const tempDiv = gaugePanels[position][0];
+    const humDiv = gaugePanels[position][1];
+    const pressDiv = gaugePanels[position][2];
 
-    parent.appendChild(tempDiv);
-    parent.appendChild(humDiv);
-    parent.appendChild(pressDiv);
-    dashboardDiv.insertBefore(parent, dashboardDiv.firstChild);
+    const temp = this.temps[this.temps.length - 1];
+    const hum = this.hums[this.hums.length - 1];
+    const press = this.press[this.press.length - 1];
 
     const tempGauge = new Gauge(tempDiv, 5, temp + "°", 5, 40, "#fff", "#000");
     tempGauge.animateValue(temp, temp + "°", 800)
@@ -95,4 +99,29 @@ function addGaugePanel(temp, hum, press) {
     pressGauge.animateValue(press, press + " mbar", 800);
 }
 
+function addPanels(amount) {
+    const gaugesBlueprint = document.getElementById("gauges");
+    const tempGaugeBlueprint = document.getElementById("tempGauge");
+    const humGaugeBlueprint = document.getElementById("humGauge");
+    const presGaugeBlueprint = document.getElementById("presGauge");
 
+    for (var i = 0; i < amount; i++) {
+        const parent = document.createElement("div");
+        parent.classList = gaugesBlueprint.classList;
+
+        const tempDiv = document.createElement("div");
+        tempDiv.classList = tempGaugeBlueprint.classList;
+        const humDiv = document.createElement("div");
+        humDiv.classList = humGaugeBlueprint.classList;
+        const pressDiv = document.createElement("div");
+        pressDiv.classList = presGaugeBlueprint.classList;
+
+        parent.appendChild(tempDiv);
+        parent.appendChild(humDiv);
+        parent.appendChild(pressDiv);
+        dashboardDiv.insertBefore(parent, dashboardDiv.firstChild);
+
+        const gaugePanel = [tempDiv, humDiv, pressDiv];
+        gaugePanels.push(gaugePanel);
+    }
+}
