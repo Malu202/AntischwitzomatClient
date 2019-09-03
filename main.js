@@ -1,5 +1,5 @@
 const api = "https://antischwitzomat.glitch.me/measurements";
-var ids = [undefined];
+var ids = [undefined, 123];
 
 const log = document.getElementById("output");
 const tempCanvas = document.getElementById("tempPlot");
@@ -63,6 +63,7 @@ function onDataReceived(data) {
 
         graphs: [
             {
+                type: "shadow",
                 x: weatherStations[ids[0]].times,
                 y: weatherStations[ids[0]].temps,
                 xHighlight: weatherStations[ids[0]].times,
@@ -86,6 +87,13 @@ WeatherStation.prototype.addGaugePanel = function (position) {
     const tempDiv = gaugePanels[position][0];
     const humDiv = gaugePanels[position][1];
     const pressDiv = gaugePanels[position][2];
+
+    //Just for mockup:
+    if (this.temps[this.temps.length - 1] == undefined) {
+        this.temps[this.temps.length - 1] = Math.round(Math.random() * 35 + 5);
+        this.hums[this.hums.length - 1] = Math.round(Math.random() * 70 + 30);
+        this.press[this.press.length - 1] = Math.round(Math.random() * 15 + 1000);
+    }
 
     const temp = this.temps[this.temps.length - 1];
     const hum = this.hums[this.hums.length - 1];
