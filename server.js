@@ -26,13 +26,6 @@ db.serialize(function () {
     if (!exists) {
         db.run('CREATE TABLE Measurements (time DATETIME, temperature DECIMAL, humidity DECIMAL, pressure DECIMAL)');
     }
-    // else {
-    //     db.each('SELECT * from Measurements', function (err, row) {
-    //         if (row) {
-    //             console.log('record:', row);
-    //         }
-    //     });
-    // }
 });
 
 app.get('/', function (request, response) {
@@ -46,14 +39,14 @@ app.get('/measurements', function (request, response) {
 });
 
 app.post('/measurements', function (request, response) {
-    // var time = request.body.time;
     var date = new Date();
     var sqllite_date = date.toISOString();
 
-    var temp = request.body.temperature;
-    var hum = request.body.humidity;
-    var pres = request.body.pressure;
-    addNewMeasurement(sqllite_date, temp, hum, pres);
+    var id = request.body.i;
+    var temp = request.body.t;
+    var hum = request.body.h;
+    var pres = request.body.p;
+    addNewMeasurement(sqllite_date, id, temp, hum, pres);
     response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
 
 });
@@ -63,11 +56,11 @@ app.delete('/measurements', function (request, response) {
     response.send("deleted database");
 });
 
-function addNewMeasurement(time, temperature, humidity, pressure) {
-    const dataString = '"' + time + '", "' + temperature +  '", "' + humidity + '", "' + pressure +  '"';
+function addNewMeasurement(time, id, temperature, humidity, pressure) {
+    const dataString = '"' + time + '", "' + temperature + '", "' + humidity + '", "' + pressure + '"';
     console.log("saving: " + dataString);
     db.serialize(function () {
-        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure) VALUES ('+ dataString + ')');
+        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure) VALUES (' + dataString + ')');
     });
 }
 

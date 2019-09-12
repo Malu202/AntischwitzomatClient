@@ -48,7 +48,7 @@ function onDataReceived(data) {
         const labelDate = new Date((weatherStations[ids[0]].times[0] * 1000 + stepSize * i));
         weatherStations[ids[0]].timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
     }
-    (new Plot(tempCanvas, {
+    new Plot(tempCanvas, {
         xAxisSize: 0.08,
         yAxisSize: 0.08,
         // topMargin: 0.05,
@@ -70,7 +70,7 @@ function onDataReceived(data) {
                 yHighlight: weatherStations[ids[0]].temps
             }
         ]
-    })).draw();
+    });
 }
 
 
@@ -95,15 +95,17 @@ WeatherStation.prototype.addGaugePanel = function (position) {
         this.press[this.press.length - 1] = Math.round(Math.random() * 15 + 1000);
     }
 
-    const temp = this.temps[this.temps.length - 1];
-    const hum = this.hums[this.hums.length - 1];
-    const press = this.press[this.press.length - 1];
+    var temp = this.temps[this.temps.length - 1];
+    var hum = this.hums[this.hums.length - 1];
+    var press = this.press[this.press.length - 1];
 
+    if (temp < 10.5) temp = " " + temp;
+    if (hum < 10.5) temp = " " + temp;
     const tempGauge = new Gauge(tempDiv, 5, temp + "°", 5, 40, "#fff", "#000");
     tempGauge.animateValue(temp, temp + "°", 800)
     const humGauge = new Gauge(humDiv, 5, hum + "%", 30, 100, "#fff", "#000");
     humGauge.animateValue(hum, hum + "%", 800)
-    const pressGauge = new Gauge(pressDiv, 5, press + " mbar", 1000, 100000, "#fff", "#000");
+    const pressGauge = new Gauge(pressDiv, 5, press + " mbar", 900, 1000000, "#fff", "#000");
     pressGauge.animateValue(press, press + " mbar", 800);
 }
 
