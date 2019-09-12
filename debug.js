@@ -24,9 +24,10 @@ const deleteButton = document.getElementById("delete");
 
 sendButton.onclick = function () {
     var data = JSON.stringify({
-        temperature: temp.value,
-        humidity: hum.value,
-        pressure: pres.value
+        i: "debug",
+        t: temp.value,
+        h: hum.value,
+        p: pres.value
     });
     console.log("sending " + data)
     const tempSubmit = new XMLHttpRequest();

@@ -48,7 +48,7 @@ app.post('/measurements', function (request, response) {
     var pres = request.body.p;
     addNewMeasurement(sqllite_date, id, temp, hum, pres);
     response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
-
+    console.log(request.body);
 });
 
 app.delete('/measurements', function (request, response) {
@@ -60,7 +60,7 @@ function addNewMeasurement(time, id, temperature, humidity, pressure) {
     const dataString = '"' + time + '", "' + temperature + '", "' + humidity + '", "' + pressure + '"';
     console.log("saving: " + dataString);
     db.serialize(function () {
-        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure) VALUES (' + dataString + ')');
+        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure) VALUES ((?),(?),(?),(?))', [time, temperature, humidity, pressure]);
     });
 }
 
