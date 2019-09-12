@@ -98,13 +98,13 @@ WeatherStation.prototype.addGaugePanel = function (position) {
     var temp = this.temps[this.temps.length - 1];
     var hum = this.hums[this.hums.length - 1];
     var press = this.press[this.press.length - 1];
-    
-    const tempGauge = new Gauge(tempDiv, 5, temp + "°", 5, 40, "#fff", "#000");
-    tempGauge.animateValue(temp, temp + "°", 800)
-    const humGauge = new Gauge(humDiv, 5, hum + "%", 30, 100, "#fff", "#000");
-    humGauge.animateValue(hum, hum + "%", 800)
-    const pressGauge = new Gauge(pressDiv, 5, press + " mbar", 900, 1000000, "#fff", "#000");
-    pressGauge.animateValue(press, press + " mbar", 800);
+
+    const tempGauge = new Gauge(tempDiv, "", temp, "°", 5, 40, "#fff", "#000");
+    tempGauge.animateValue(temp, 800)
+    const humGauge = new Gauge(humDiv, "", hum, "%", 30, 99, "#fff", "#000");
+    humGauge.animateValue(hum, 800)
+    const pressGauge = new Gauge(pressDiv, "", press, " mbar", 950, 9999, "#fff", "#000");
+    pressGauge.animateValue(press, 800);
 }
 
 function addPanels(amount) {
