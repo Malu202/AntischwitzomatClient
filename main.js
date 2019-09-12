@@ -58,7 +58,7 @@ function onDataReceived(data) {
         yAxisLabelSuffix: "° ",
         drawGridLineX: false,
         drawGridLineY: false,
-        // preferredLabelStepsY: [1, 2, 2.5, 5],
+        preferredLabelStepsY: [1, 2, 5],
         xLabelNames: weatherStations[ids[0]].timeLabels,
 
         graphs: [
