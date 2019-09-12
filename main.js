@@ -98,9 +98,7 @@ WeatherStation.prototype.addGaugePanel = function (position) {
     var temp = this.temps[this.temps.length - 1];
     var hum = this.hums[this.hums.length - 1];
     var press = this.press[this.press.length - 1];
-
-    if (temp < 10.5) temp = " " + temp;
-    if (hum < 10.5) temp = " " + temp;
+    
     const tempGauge = new Gauge(tempDiv, 5, temp + "°", 5, 40, "#fff", "#000");
     tempGauge.animateValue(temp, temp + "°", 800)
     const humGauge = new Gauge(humDiv, 5, hum + "%", 30, 100, "#fff", "#000");
