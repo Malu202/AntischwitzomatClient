@@ -9,7 +9,7 @@ const log = document.getElementById("output");
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
     for (var i = 0; i < response.length; i++) {
-        log.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + '<br />';
+        log.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id + '<br />';
     }
     console.log(response)
 }

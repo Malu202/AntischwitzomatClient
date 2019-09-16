@@ -1,5 +1,5 @@
 const api = "https://antischwitzomat.glitch.me/measurements";
-var ids = [undefined, 123];
+var ids = ["esp", "debug"];
 
 const log = document.getElementById("output");
 const tempCanvas = document.getElementById("tempPlot");

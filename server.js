@@ -24,12 +24,29 @@ var db = new sqlite3.Database(dbFile);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(function () {
     if (!exists) {
-        db.run('CREATE TABLE Measurements (time DATETIME, temperature DECIMAL, humidity DECIMAL, pressure DECIMAL)');
-    }
-});
+        db.run('CREATE TABLE Measurements (time DATETIME, temperature DECIMAL, humidity DECIMAL, pressure DECIMAL, id INTEGER)');
+        db.run(`CREATE TABLE Stations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(100),
+            groupId INTEGER,
 
-app.get('/', function (request, response) {
-    response.sendFile(__dirname + '/views/index.html');
+            greaterThanGroupId INTEGER,
+            greaterThanOffset DECIMAL,
+            greaterThanMessage VARCHAR(254),
+            greaterThanDelay INTEGER,
+            greaterThanLastNotification DATE,
+            greaterThanAndMinimum DECIMAL,
+            greaterThanAndMaximum DECIMAL,
+            
+            smallerThanGroupId INTEGER,
+            smallerThanOffset DECIMAL,
+            smallerThanMessage VARCHAR(254),
+            smallerThanDelay INTEGER,
+            smallerThanLastNotification DATE,
+            smallerThanAndMinimum DECIMAL,
+            smallerThanAndMaximum DECIMAL,
+            )`);
+    }
 });
 
 app.get('/measurements', function (request, response) {
@@ -39,15 +56,22 @@ app.get('/measurements', function (request, response) {
 });
 
 app.post('/measurements', function (request, response) {
-    var date = new Date();
-    var sqllite_date = date.toISOString();
+    response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
 
     var id = request.body.i;
     var temp = request.body.t;
     var hum = request.body.h;
     var pres = request.body.p;
+    var date = request.body.d;
+    var date = new Date(date);
+
+    if (isNaN(date.getMilliseconds())) {
+        date = new Date();
+    }
+    var sqllite_date = date.toISOString();
+
     addNewMeasurement(sqllite_date, id, temp, hum, pres);
-    response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
+    checkNotifications(sqllite_date, id, temp, hum, pres);
     console.log(request.body);
 });
 
@@ -60,10 +84,20 @@ function addNewMeasurement(time, id, temperature, humidity, pressure) {
     const dataString = '"' + time + '", "' + temperature + '", "' + humidity + '", "' + pressure + '"';
     console.log("saving: " + dataString);
     db.serialize(function () {
-        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure) VALUES ((?),(?),(?),(?))', [time, temperature, humidity, pressure]);
+        db.run('INSERT INTO Measurements (time, temperature, humidity, pressure, id) VALUES ((?),(?),(?),(?),(?))', [time, temperature, humidity, pressure, id]);
     });
 }
+
+app.get('/stations', function (request, response) {
+    db.all('SELECT * from Stations', function (err, rows) {
+        response.send(JSON.stringify(rows));
+    });
+});
 
 var listener = app.listen(process.env.PORT, function () {
     console.log('Your app is listening on port ' + listener.address().port);
 });
+
+function checkNotifications() {
+    //TODO
+}
