@@ -59,9 +59,9 @@ app.post('/measurements', function (request, response) {
     response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
 
     var id = request.body.i;
-    var temp = request.body.t;
-    var hum = request.body.h;
-    var pres = request.body.p;
+    var temp = request.body.t/100;
+    var hum = request.body.h/100;
+    var pres = request.body.p/10000;
     var date = request.body.d;
     var date = new Date(date);
 
