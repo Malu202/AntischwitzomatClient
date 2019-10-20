@@ -1,5 +1,7 @@
 const api = "https://antischwitzomat.glitch.me/measurements";
-var ids = ["esp", "debug"];
+// var ids = ["esp", "debug"];
+var ids = ["esp"];
+
 
 const log = document.getElementById("output");
 const tempCanvas = document.getElementById("tempPlot");
@@ -53,7 +55,7 @@ function onDataReceived(data) {
         yAxisSize: 0.08,
         // topMargin: 0.05,
         // rightMargin: 0.05,
-        // yAxisLabelMaxDecimals: 3,
+        yAxisLabelMaxDecimals: 0,
         yAxisMaxLabels: 15,
         yAxisLabelSuffix: "° ",
         drawGridLineX: false,
@@ -95,9 +97,9 @@ WeatherStation.prototype.addGaugePanel = function (position) {
         this.press[this.press.length - 1] = Math.round(Math.random() * 15 + 1000);
     }
 
-    var temp = this.temps[this.temps.length - 1];
-    var hum = this.hums[this.hums.length - 1];
-    var press = this.press[this.press.length - 1];
+    var temp = Math.round(this.temps[this.temps.length - 1]);
+    var hum = Math.round(this.hums[this.hums.length - 1]);
+    var press = Math.round(this.press[this.press.length - 1]);
 
     const tempGauge = new Gauge(tempDiv, "", temp, "°", 5, 40, "#fff", "#000");
     tempGauge.animateValue(temp, 800)
