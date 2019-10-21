@@ -8,9 +8,14 @@ const log = document.getElementById("output");
 
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
-    for (var i = 0; i < response.length; i++) {
-        log.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id + '<br />';
+    var data = document.createElement("div");
+    for (var i = response.length-1; i >= 0; i--) {
+        var dataLine = document.createElement("div");
+        // data.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id + '<br />';
+        dataLine.innerText = (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id;
+        data.appendChild(dataLine);
     }
+    log.appendChild(data)
     console.log(response)
 }
 
