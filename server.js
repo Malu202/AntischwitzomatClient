@@ -59,6 +59,11 @@ app.get('/mockup', function (request, response) {
     response.sendFile(__dirname + "/sampleDay_spikes.json");
 });
 
+app.get('/mockup2', function (request, response) {
+    response.sendFile(__dirname + "/sampleDay_fewSpikes.json");
+});
+
+
 app.post('/measurements', function (request, response) {
     response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
 

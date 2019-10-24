@@ -1,4 +1,6 @@
 const api = "https://antischwitzomat.glitch.me/measurements";
+// const api = "https://antischwitzomat.glitch.me/mockup2";
+
 // var ids = ["esp", "debug"];
 var ids = ["esp"];
 
