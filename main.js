@@ -21,6 +21,7 @@ tempRequest.send();
 
 var plottedValue = 0;
 function onDataReceived(data) {
+
     var response = JSON.parse(this.responseText);
 
     for (var i = 0; i < ids.length; i++) {
@@ -39,7 +40,9 @@ function onDataReceived(data) {
         weatherStations[ids[i]].addGaugePanel(i);
     }
 
-    for (var i = 0; i < response.length; i += response.length - 1) {
+    // if (false) return false;
+
+    for (var i = 0; i < response.length; i += (response.length - 1) || 1) {
         const date = (new Date(response[i].time));
         const time = date.getHours() + ":" + date.getMinutes();
         weatherStations[ids[0]].timeLabels.push(time);
