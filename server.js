@@ -55,13 +55,17 @@ app.get('/measurements', function (request, response) {
     });
 });
 
+app.get('/mockup', function (request, response) {
+    response.sendFile(__dirname + "/sampleDay_spikes.json");
+});
+
 app.post('/measurements', function (request, response) {
     response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
 
     var id = request.body.i;
-    var temp = request.body.t/100;
-    var hum = request.body.h/100;
-    var pres = request.body.p/10000;
+    var temp = request.body.t / 100;
+    var hum = request.body.h / 100;
+    var pres = request.body.p / 10000;
     var date = request.body.d;
     var date = new Date(date);
 
