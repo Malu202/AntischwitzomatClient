@@ -17,7 +17,7 @@ tempRequest.onload = onDataReceived;
 tempRequest.open('get', api);
 tempRequest.send();
 
-
+var plottedValue = 0;
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
 
@@ -50,14 +50,27 @@ function onDataReceived(data) {
         const labelDate = new Date((weatherStations[ids[0]].times[0] * 1000 + stepSize * i));
         weatherStations[ids[0]].timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
     }
-    new Plot(tempCanvas, {
+
+    var plottableValues = [weatherStations[ids[0]].temps, weatherStations[ids[0]].hums, weatherStations[ids[0]].press];
+    var suffixes = ['° ', '% ', '']
+    createPlot(weatherStations[ids[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
+    tempCanvas.onclick = function () {
+        plottedValue++;
+        if (plottedValue > plottableValues.length - 1) plottedValue = 0;
+        createPlot(weatherStations[ids[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
+    }
+}
+
+var plot;
+function createPlot(x, y, sf) {
+    plot = new Plot(tempCanvas, {
         xAxisSize: 0.08,
         yAxisSize: 0.08,
         // topMargin: 0.05,
         // rightMargin: 0.05,
         yAxisLabelMaxDecimals: 0,
         yAxisMaxLabels: 15,
-        yAxisLabelSuffix: "° ",
+        yAxisLabelSuffix: sf,
         drawGridLineX: false,
         drawGridLineY: false,
         preferredLabelStepsY: [1, 2, 5],
@@ -66,15 +79,14 @@ function onDataReceived(data) {
         graphs: [
             {
                 type: "shadow",
-                x: weatherStations[ids[0]].times,
-                y: weatherStations[ids[0]].temps,
-                xHighlight: weatherStations[ids[0]].times,
-                yHighlight: weatherStations[ids[0]].temps
+                x: x,
+                y: y,
+                xHighlight: x,
+                yHighlight: y
             }
         ]
     });
 }
-
 
 
 function WeatherStation() {
