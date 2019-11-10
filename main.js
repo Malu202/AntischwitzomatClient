@@ -167,16 +167,24 @@ if ('serviceWorker' in navigator) {
 }
 
 function setupPushNotifications(serviceWorkerRegistration) {
-    serviceWorkerRegistration.pushManager.getSubscription()
-        .then(function (subscription) {
-            isSubscribed = !(subscription === null);
+    // serviceWorkerRegistration.pushManager.subscribe({
+    //     userVisibleOnly: true,
+    //     applicationServerKey: "BPpC0dcJVJWCBwjKNWPJW4o75bZpfiqUtGAU3Du18npgjqtCDqfWLMbHjIkMQAbDvcuPbP5eLfL9ZDSxilOFq0I"
+    // }).then(function (subscription) {
+    //     isSubscribed = !(subscription === null);
 
-            if (isSubscribed) {
-                console.log('User IS subscribed.');
-            } else {
-                console.log('User is NOT subscribed.');
-            }
+    //     if (isSubscribed) {
+    //         console.log('User IS subscribed.');
+    //     } else {
+    //         console.log('User is NOT subscribed.');
+    //     }
+    // });
 
-            // updateBtn();
+    serviceWorkerRegistration.pushManager.subscribe().then(
+        function (pushSubscription) {
+            console.log(pushSubscription.subscriptionId);
+            console.log(pushSubscription.endpoint);
+        }, function (error) {
+            console.log(error);
         });
 }
