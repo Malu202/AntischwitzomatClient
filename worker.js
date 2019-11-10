@@ -1,7 +1,7 @@
 
 this.addEventListener('install', function (event) {
     console.log("service worker installed");
-    // self.skipWaiting();
+    self.skipWaiting();
     event.waitUntil(
         caches.open('v1')
             .then(function (cache) {
@@ -34,14 +34,14 @@ this.addEventListener('fetch', function (event) {
     );
 });
 
-// this.addEventListener('activate', function (event) {
-//     console.log("service worker activated")
-//     event.waitUntil(
-//         caches.keys().then(function (keyList) {
-//             console.log("delete cache");
-//             return Promise.all(keyList.map(function (key) {
-//                 return caches.delete(key);
-//             }));
-//         })
-//     );
-// });
+this.addEventListener('activate', function (event) {
+    console.log("service worker activated")
+    // event.waitUntil(
+    //     caches.keys().then(function (keyList) {
+    //         console.log("delete cache");
+    //         return Promise.all(keyList.map(function (key) {
+    //             return caches.delete(key);
+    //         }));
+    //     })
+    // );
+});

@@ -65,7 +65,7 @@ app.get('/mockup2', function (request, response) {
 
 
 app.post('/measurements', function (request, response) {
-    response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
+    
 
     var id = request.body.i;
     var temp = request.body.t / 100;
@@ -78,7 +78,7 @@ app.post('/measurements', function (request, response) {
         date = new Date();
     }
     var sqllite_date = date.toISOString();
-
+    response.send("saved " + temp + " " + hum + " " + pres + " at " + sqllite_date);
     addNewMeasurement(sqllite_date, id, temp, hum, pres);
     checkNotifications(sqllite_date, id, temp, hum, pres);
     console.log(request.body);
