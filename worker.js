@@ -6,11 +6,11 @@ this.addEventListener('install', function (event) {
         caches.open('v1')
             .then(function (cache) {
                 return cache.addAll([
-                    '/',
-                    '/index.html',
-                    '/main.js',
-                    '/style.css',
-                    '/debug.html',
+                    './',
+                    './index.html',
+                    './main.js',
+                    './style.css',
+                    './debug.html',
 
                     'https://fonts.googleapis.com/icon?family=Material+Icons',
                     'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
