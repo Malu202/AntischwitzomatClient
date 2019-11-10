@@ -166,24 +166,35 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 function setupPushNotifications(serviceWorkerRegistration) {
-    // serviceWorkerRegistration.pushManager.subscribe({
-    //     userVisibleOnly: true,
-    //     applicationServerKey: "BPpC0dcJVJWCBwjKNWPJW4o75bZpfiqUtGAU3Du18npgjqtCDqfWLMbHjIkMQAbDvcuPbP5eLfL9ZDSxilOFq0I"
-    // }).then(function (subscription) {
-    //     isSubscribed = !(subscription === null);
 
-    //     if (isSubscribed) {
-    //         console.log('User IS subscribed.');
-    //     } else {
-    //         console.log('User is NOT subscribed.');
-    //     }
-    // });
-
-    serviceWorkerRegistration.pushManager.subscribe().then(
+    var key = 'BPpC0dcJVJWCBwjKNWPJW4o75bZpfiqUtGAU3Du18npgjqtCDqfWLMbHjIkMQAbDvcuPbP5eLfL9ZDSxilOFq0I';
+    key = urlBase64ToUint8Array(key);
+    serviceWorkerRegistration.pushManager.subscribe(
+        {
+            userVisibleOnly: true,
+            applicationServerKey: key
+        }
+    ).then(
         function (pushSubscription) {
-            console.log(pushSubscription.subscriptionId);
-            console.log(pushSubscription.endpoint);
+            // console.log(pushSubscription.subscriptionId);
+            // console.log(pushSubscription.endpoint);
+            console.log(JSON.stringify(pushSubscription))
         }, function (error) {
             console.log(error);
         });

@@ -40,3 +40,30 @@ this.addEventListener('activate', function (event) {
     //     })
     // );
 });
+
+
+function showNotification(event) {
+    return new Promise(resolve => {
+        const { body, title, tag } = JSON.parse(event.data.text());
+        self.registration
+            .getNotifications({ tag })
+            .then(existingNotifications => { /* close? ignore? */ })
+            .then(() => {
+                const icon = `/path/to/icon`;
+                return self.registration
+                    .showNotification(title, { body, tag, icon })
+            })
+            .then(resolve)
+    })
+}
+
+this.addEventListener("push", event => {
+    console.log("got push data");
+    // event.waitUntil(
+    //     //showNotification(event)
+    // );
+});
+
+this.addEventListener("notificationclick", event => {
+    event.waitUntil(clients.openWindow("/"));
+});
