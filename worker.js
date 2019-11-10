@@ -42,26 +42,37 @@ this.addEventListener('activate', function (event) {
 });
 
 
-function showNotification(event) {
-    return new Promise(resolve => {
-        const { body, title, tag } = JSON.parse(event.data.text());
-        self.registration
-            .getNotifications({ tag })
-            .then(existingNotifications => { /* close? ignore? */ })
-            .then(() => {
-                const icon = `/path/to/icon`;
-                return self.registration
-                    .showNotification(title, { body, tag, icon })
-            })
-            .then(resolve)
-    })
-}
+// function showNotification(event) {
+//     return new Promise(resolve => {
+//         const { body, title, tag } = JSON.parse(event.data.text());
+//         self.registration
+//             .getNotifications({ tag })
+//             .then(existingNotifications => { /* close? ignore? */ })
+//             .then(() => {
+//                 const icon = `/path/to/icon`;
+//                 return self.registration
+//                     .showNotification(title, { body, tag, icon })
+//             })
+//             .then(resolve)
+//     })
+// }
 
 this.addEventListener("push", event => {
     console.log("got push data");
+    console.log(event.data.text())
     // event.waitUntil(
     //     //showNotification(event)
     // );
+    const title = 'Antischwitzomat';
+    const options = {
+        body: event.data.text(),
+        icon: 'images/icon.png',
+        badge: 'images/badge.png'
+    };
+
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
 });
 
 this.addEventListener("notificationclick", event => {
