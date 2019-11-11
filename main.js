@@ -1,4 +1,9 @@
-const api = "https://antischwitzomat.glitch.me/measurements";
+const API_URL = "https://antischwitzomat.glitch.me/"
+const api = API_URL + "measurements";
+const NOTIFICATIONS_URL = API_URL + "notifications";
+
+const NOTIFICATION_PUBLIC_KEY = 'BPpC0dcJVJWCBwjKNWPJW4o75bZpfiqUtGAU3Du18npgjqtCDqfWLMbHjIkMQAbDvcuPbP5eLfL9ZDSxilOFq0I';
+// NOTIFICATION_PUBLIC_KEY = urlBase64ToUint8Array(NOTIFICATION_PUBLIC_KEY);
 // const api = "https://antischwitzomat.glitch.me/mockup2";
 
 // var ids = ["esp", "debug"];
@@ -182,20 +187,25 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function setupPushNotifications(serviceWorkerRegistration) {
-
-    var key = 'BPpC0dcJVJWCBwjKNWPJW4o75bZpfiqUtGAU3Du18npgjqtCDqfWLMbHjIkMQAbDvcuPbP5eLfL9ZDSxilOFq0I';
-    key = urlBase64ToUint8Array(key);
     serviceWorkerRegistration.pushManager.subscribe(
         {
             userVisibleOnly: true,
-            applicationServerKey: key
+            applicationServerKey: NOTIFICATION_PUBLIC_KEY
         }
     ).then(
         function (pushSubscription) {
             // console.log(pushSubscription.subscriptionId);
             // console.log(pushSubscription.endpoint);
-            console.log(JSON.stringify(pushSubscription))
+            console.log(JSON.stringify(pushSubscription));
+            sendNotificationDetails(pushSubscription);
         }, function (error) {
             console.log(error);
         });
+}
+
+function sendNotificationDetails(subscription) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", NOTIFICATIONS_URL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(subscription));
 }
