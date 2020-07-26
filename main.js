@@ -1,4 +1,5 @@
-const API_URL = "https://antischwitzomat.glitch.me/"
+let API_URL = "https://antischwitzomat.glitch.me/"
+API_URL = "http://127.0.0.1:1337/"
 const api = API_URL + "measurements";
 const NOTIFICATIONS_URL = API_URL + "notifications";
 

@@ -1,4 +1,5 @@
-const api = "https://antischwitzomat.glitch.me/measurements";
+let api = "https://antischwitzomat.glitch.me/measurements";
+api = "http://127.0.0.1:1337/measurements";
 const tempRequest = new XMLHttpRequest();
 tempRequest.onload = onDataReceived;
 tempRequest.open('get', api);
@@ -9,10 +10,10 @@ const log = document.getElementById("output");
 function onDataReceived(data) {
     var response = JSON.parse(this.responseText);
     var data = document.createElement("div");
-    for (var i = response.length-1; i >= 0; i--) {
+    for (var i = response.length - 1; i >= 0; i--) {
         var dataLine = document.createElement("div");
         // data.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id + '<br />';
-        dataLine.innerText = (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id;
+        dataLine.innerText = (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].sensor_id;
         data.appendChild(dataLine);
     }
     log.appendChild(data)
@@ -29,7 +30,7 @@ const deleteButton = document.getElementById("delete");
 
 sendButton.onclick = function () {
     var data = JSON.stringify({
-        i: "debug",
+        i: "0",
         t: temp.value,
         h: hum.value,
         p: pres.value
