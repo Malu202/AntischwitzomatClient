@@ -46,7 +46,10 @@ module.exports = {
         publicPath: '/'
     },
     plugins: [
-        new HtmlWebpackPlugin({ base: "/", title: "Antischwitzomat" }),
+        new HtmlWebpackPlugin({
+            base: "/", title: "Antischwitzomat",
+            template: 'src/index.html'
+        }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
             chunkFilename: '[id].[contenthash].css',
