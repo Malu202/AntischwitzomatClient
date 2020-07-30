@@ -1,5 +1,5 @@
-// import "./lib/gauge.min.js"
-// import "./lib/plot.min.js"
+import "./lib/gauge.min.js"
+import "./lib/plot.min.js"
 import { Router, ContainerRouteRenderer } from "route-it"
 import { RouteResolver } from "./route-resolver";
 import "./style.scss";

@@ -48,7 +48,7 @@ module.exports = (env, argv) => {
         output: {
             path: path.resolve(__dirname, 'dist'),
             filename: '[contenthash].bundle.js',
-            publicPath: '/'
+            publicPath: base
         },
         plugins: [
             new HtmlWebpackPlugin({
