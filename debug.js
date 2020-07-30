@@ -31,9 +31,9 @@ const deleteButton = document.getElementById("delete");
 sendButton.onclick = function () {
     var data = JSON.stringify({
         i: "0",
-        t: temp.value,
-        h: hum.value,
-        p: pres.value
+        t: temp.value * 100,
+        h: hum.value * 100,
+        p: pres.value * 10000
     });
     console.log("sending " + data)
     const tempSubmit = new XMLHttpRequest();

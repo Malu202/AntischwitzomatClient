@@ -9,6 +9,7 @@ const NOTIFICATION_PUBLIC_KEY = 'BPpC0dcJVJWCBwjKNWPJW4o75bZpfiqUtGAU3Du18npgjqt
 
 // var ids = ["esp", "debug"];
 var ids = ["esp"];
+ids = [0];
 
 
 const log = document.getElementById("output");
@@ -34,7 +35,9 @@ function onDataReceived(data) {
         weatherStations[ids[i]] = new WeatherStation();
     }
     for (var i = 0; i < response.length; i++) {
-        const station = weatherStations[response[i].id];
+        // const station = weatherStations[response[i].id];
+        const station = weatherStations[response[i].sensor_id];
+
         if (station == undefined) continue;
         const date = (new Date(response[i].time));
         station.times.push((date.getTime() / 1000));
@@ -128,7 +131,7 @@ WeatherStation.prototype.addGaugePanel = function (position) {
     tempGauge.animateValue(temp, 800)
     const humGauge = new Gauge(humDiv, "", hum, "%", 30, 99, "#fff", "#000");
     humGauge.animateValue(hum, 800)
-    const pressGauge = new Gauge(pressDiv, "", press, " mbar", 950, 9999, "#fff", "#000");
+    const pressGauge = new Gauge(pressDiv, "", press, " mbar", 950, 1050, "#fff", "#000");
     pressGauge.animateValue(press, 800);
 }
 
