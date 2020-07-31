@@ -1,0 +1,49 @@
+<div class="mdc-card room">
+    <div style="display: none;" id="name-invalid">Namen eingeben!</div>
+    <div class="roomRow">
+        <label>Name:</label>
+        <div class="mdc-text-field">
+            <input id="roomname" type="text" class="mdc-text-field__input" placeholder="Room1">
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Sensor 1:</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="sensor1"
+                    class="sendung mdc-select__native-control">
+                </select></div>
+        </div>
+    </div>
+    <div class="roomRow">
+        <label>Sensor 2 (Optional):</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="sensor2"
+                    class="sendung mdc-select__native-control">
+                </select></div>
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Type</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="type"
+                    class="sendung mdc-select__native-control">
+                    <option class="sendungOption">Average</option>
+                    <option class="sendungOption">Maximum</option>
+                    <option class="sendungOption">Minimum</option>
+                </select></div>
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <div>
+            <button id="remove"
+                class="mdc-icon-button material-icons mdc-top-app-bar__action-item--unbounded">delete</button>
+        </div>
+        <div>
+            <button id="save"
+                class="mdc-icon-button material-icons mdc-top-app-bar__action-item--unbounded">save</button>
+        </div>
+    </div>
+</div>

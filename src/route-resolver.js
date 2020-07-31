@@ -11,6 +11,10 @@ export class RouteResolver {
             // case "page2-webcomponent": // route /page2-webcomponent
             //     let component = new SomeFancyComponent();
             //     return component;
+            case "debug":
+                return import("./components/debug/debug").then(function (importedModule) {
+                    return new importedModule.DebugComponent();
+                });
             case "rooms":
                 return new RoomsComponent();
             case "":

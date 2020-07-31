@@ -1,5 +1,5 @@
 $mdc-theme-primary: rgb(31, 90, 33);
-$mdc-theme-secondary: #feeae6;
+$mdc-theme-secondary: #ff8f00;
 $mdc-theme-on-primary: #fff;
 $mdc-theme-on-secondary: #fff;
 
@@ -7,6 +7,9 @@ $mdc-theme-on-secondary: #fff;
 @import "@material/icon-button/mdc-icon-button";
 @import "@material/elevation/mdc-elevation";
 @import "@material/card/mdc-card";
+@import "@material/select/mdc-select";
+@import "@material/textfield/mdc-text-field";
+@import "@material/fab/mdc-fab";
 
 
 html,
@@ -15,6 +18,7 @@ body {
     padding: 0;
     height: 100%;
     width: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 #content {
@@ -23,7 +27,8 @@ body {
     width: 100%;
 }
 
-#dashboard {
+#dashboard,
+#rooms {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -56,7 +61,98 @@ body {
 }
 
 
-
 #tempPlot {
     flex: 8 1 1px;
+}
+
+#rooms>* {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.room {
+    padding: 8px;
+}
+
+.room>* {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.roomRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.roomRow>label {
+    margin-right: 16px;
+    margin-bottom: 8px;
+}
+
+.roomRow>*:not(label) {
+    flex: 1 1 auto;
+}
+
+.roomRow>div {
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.mdc-fab {
+    position: fixed !important;
+    right: 16px;
+    bottom: 16px;
+    z-index: 100000;
+}
+
+//mdc-fixes
+select option {
+    background-color: $mdc-theme-surface;
+}
+
+.mdc-select:not(.mdc-select--disabled) {
+    background-color: $mdc-theme-surface;
+}
+
+.mdc-select__native-control {
+    background-color: $mdc-theme-surface;
+    padding-top: 0px;
+    height: auto !important;
+
+}
+
+.mdc-select {
+    padding: 0px;
+    height: auto !important;
+    width: 100%;
+}
+
+.mdc-select__dropdown-icon {
+    bottom: 3px;
+}
+
+.select-container {
+    height: 31px;
+    padding: 0px;
+}
+
+
+
+.mdc-text-field {
+    background-color: rgba(0, 0, 0, 0) !important;
+    height: 42px;
+}
+
+.mdc-text-field__input {
+    //margin: 0px 0px 0px 16px !important;
+    padding-top: 0px;
+}
+
+#home-button {
+    cursor: pointer;
 }

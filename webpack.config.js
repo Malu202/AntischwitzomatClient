@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 const path = require('path');
 
@@ -59,7 +60,10 @@ module.exports = (env, argv) => {
                 filename: '[name].[contenthash].css',
                 chunkFilename: '[id].[contenthash].css',
             }),
-            new CleanWebpackPlugin()
+            new CleanWebpackPlugin(),
+            new ServiceWorkerWebpackPlugin({
+                entry: path.join(__dirname, 'src/worker.js'),
+            })
         ],
         mode: "development",
         devServer: {
