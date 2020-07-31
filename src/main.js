@@ -25,27 +25,3 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
-
-function setupPushNotifications(serviceWorkerRegistration) {
-    serviceWorkerRegistration.pushManager.subscribe(
-        {
-            userVisibleOnly: true,
-            applicationServerKey: environment.NOTIFICATION_PUBLIC_KEY
-        }
-    ).then(
-        function (pushSubscription) {
-            // console.log(pushSubscription.subscriptionId);
-            // console.log(pushSubscription.endpoint);
-            console.log(JSON.stringify(pushSubscription));
-            sendNotificationDetails(pushSubscription);
-        }, function (error) {
-            console.log(error);
-        });
-}
-
-function sendNotificationDetails(subscription) {
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("POST", environment.NOTIFICATIONS_URL, true);
-    // xhr.setRequestHeader('Content-Type', 'application/json');
-    // xhr.send(JSON.stringify(subscription));
-}

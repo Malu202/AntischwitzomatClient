@@ -1,6 +1,6 @@
 import * as template from "./rooms.html";
 import { RoomEditor, RoomEditorTagName } from "../room/room-editor";
-import { getRooms } from "../../api/api";
+import { getRooms, getSensors } from "../../api/api";
 
 export class RoomsComponent extends HTMLElement {
 
@@ -17,7 +17,7 @@ export class RoomsComponent extends HTMLElement {
 
         // fetch me configured room
 
-        this.updateSensors([0, 1, 2]);
+        this.updateSensors();
 
         this.refreshRooms();
     }
@@ -47,15 +47,13 @@ export class RoomsComponent extends HTMLElement {
         })
     }
 
-    updateSensors(sensors) {
-        this.sensors = sensors;
-        this.roomsContainer.querySelectorAll(RoomEditorTagName).forEach(r => {
-            r.setSensors(sensors);
-        })
-    }
-
-    onload() {
-
+    updateSensors() {
+        getSensors().then(sensors => {
+            this.sensors = sensors;
+            this.roomsContainer.querySelectorAll(RoomEditorTagName).forEach(r => {
+                r.setSensors(sensors);
+            })
+        });
     }
 }
 customElements.define('app-rooms-component', RoomsComponent);

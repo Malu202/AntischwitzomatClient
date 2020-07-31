@@ -1,4 +1,5 @@
 import { environment } from "../environment";
+import { setupNotifications, getPushSubscription } from "../components/pushNotifications"
 
 function getUserId() {
     return window.localStorage.getItem("user_id");
@@ -37,22 +38,12 @@ export function deleteDatabase() {
     }).then(res => res.text());
 }
 
-export function createRoom(name, type, sensorId1, sensorId2) {
-    return fetch(`${environment.API_URL}rooms`, {
-        body: JSON.stringify({
-            user_id: getUserId(),
-            name: name,
-            type: type,
-            sensor_id1: sensorId1,
-            sensor_id2: sensorId2
-        }),
-        method: "POST",
+export function getSensors() {
+    return fetch(`${environment.API_URL}sensors`, {
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         }
-    }).then(res => res.json())
-        .then(setUserId);
+    }).then(res => res.json());
 }
 
 export function getRooms() {
@@ -74,4 +65,69 @@ export function deleteRoom(roomId) {
             'Accept': 'application/json'
         }
     }).then(res => res.text());
+}
+
+export function createRoom(name, type, sensorId1, sensorId2) {
+    return fetch(`${environment.API_URL}rooms`, {
+        body: JSON.stringify({
+            user_id: getUserId(),
+            name: name,
+            type: type,
+            sensor_id1: sensorId1,
+            sensor_id2: sensorId2
+        }),
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+        .then(setUserId);
+}
+
+export function getNotifications() {
+    let userId = getUserId();
+    if (null == userId) {
+        return Promise.resolve([]);
+    }
+    return fetch(`${environment.API_URL}notifications?user_id=${getUserId()}`, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(res => res.json());
+}
+
+export function deleteNotification(notification_id) {
+    return fetch(`${environment.API_URL}notifications?notification_id=${notification_id}`, {
+        method: "DELETE",
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(res => res.text());
+}
+
+export async function createNotification(text, room1, room2, type, amount, value) {
+    let pushNotificationKeys = await getPushSubscription();
+    console.log(pushNotificationKeys)
+    return fetch(`${environment.API_URL}notifications`, {
+        body: JSON.stringify({
+            user_id: getUserId(),
+            type: type,
+            value: value,
+            room_id1: room1,
+            room_id2: room2,
+            amount: amount,
+            message: text,
+            endpoint: pushNotificationKeys.endpoint,
+            keys: pushNotificationKeys.keys
+            // key_p256dh: pushNotificationKeys.keys.p256dh,
+            // key_auth: pushNotificationKeys.keys.auth
+        }),
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+        .then(setUserId);
 }

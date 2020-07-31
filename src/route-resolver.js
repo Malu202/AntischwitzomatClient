@@ -1,5 +1,7 @@
 import { createHomeComponent } from "./components/home/home";
 import { RoomsComponent } from "./components/rooms/rooms";
+import { NotificationsComponent } from "./components/notifications/notifications";
+
 
 export class RouteResolver {
     resolve(lastRoute, currentRoute, router) {
@@ -17,6 +19,8 @@ export class RouteResolver {
                 });
             case "rooms":
                 return new RoomsComponent();
+            case "notifications":
+                return new NotificationsComponent();
             case "":
                 return createHomeComponent();
             default:

@@ -70,10 +70,10 @@ export class RoomEditor extends HTMLElement {
                 let option = document.createElement("option");
                 sensorSelect.select.appendChild(option);
             }
-            for (let id of sensors) {
+            for (let sensor of sensors) {
                 let option = document.createElement("option");
-                option.innerText = `Sensor${id}`;
-                option.value = id;
+                option.innerText = `Sensor ${sensor.sensor_id}`;
+                option.value = sensor.sensor_id;
                 sensorSelect.select.appendChild(option);
             }
         }

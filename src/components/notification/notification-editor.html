@@ -1,0 +1,72 @@
+<div class="mdc-card room">
+    <div style="display: none;" id="name-invalid">Text eingeben!</div>
+    <div class="roomRow">
+        <label>Message:</label>
+        <div class="mdc-text-field">
+            <input id="messageText" type="text" class="mdc-text-field__input">
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Value to compare:</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="value"
+                    class="mdc-select__native-control">
+                    <option>Temperature</option>
+                    <option>Humidity</option>
+                    <option>Pressure</option>
+
+                </select></div>
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Room 1:</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="room1"
+                    class="mdc-select__native-control">
+
+                </select></div>
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Type</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="type"
+                    class="sendung mdc-select__native-control">
+                    <option>Greater than</option>
+                    <option>Less than</option>
+                    <option>Falling more than</option>
+                    <option>Rising more than</option>
+                </select></div>
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Room 2 (Optional):</label>
+        <div class="select-container">
+            <div class="mdc-select"><i class="mdc-select__dropdown-icon"></i><select id="room2"
+                    class="sendung mdc-select__native-control">
+                </select></div>
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <label>Value:</label>
+        <div class="mdc-text-field">
+            <input id="amount" type="number" step="0.5" value=0 class="mdc-text-field__input">
+        </div>
+    </div>
+
+    <div class="roomRow">
+        <div>
+            <button id="remove"
+                class="mdc-icon-button material-icons mdc-top-app-bar__action-item--unbounded">delete</button>
+        </div>
+        <div>
+            <button id="save"
+                class="mdc-icon-button material-icons mdc-top-app-bar__action-item--unbounded">save</button>
+        </div>
+    </div>
+</div>
