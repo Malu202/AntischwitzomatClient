@@ -2,12 +2,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+const { DefinePlugin } = require("webpack");
 
 const path = require('path');
 
 module.exports = (env, argv) => {
     const production = argv.mode == "production";
     const isGithubPages = env && env.githubpages;
+
+    const environment = isGithubPages ? "'gh-pages'" : "'local'";
 
     const base = isGithubPages ? "/AntischwitzomatClient/" : "/";
     return {
@@ -64,6 +67,9 @@ module.exports = (env, argv) => {
             new ServiceWorkerWebpackPlugin({
                 entry: path.join(__dirname, 'src/worker.js'),
                 publicPath: base
+            }),
+            new DefinePlugin({
+                __ENVIRONMENT: environment
             })
         ],
         mode: "development",
