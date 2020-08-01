@@ -63,6 +63,7 @@ module.exports = (env, argv) => {
             new CleanWebpackPlugin(),
             new ServiceWorkerWebpackPlugin({
                 entry: path.join(__dirname, 'src/worker.js'),
+                publicPath: base
             })
         ],
         mode: "development",
