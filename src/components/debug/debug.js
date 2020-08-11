@@ -20,6 +20,7 @@ export class DebugComponent extends HTMLElement {
         this.pres = this.querySelector("#pres");
         this.sendButton = this.querySelector("#send");
         this.deleteButton = this.querySelector("#delete");
+        this.sensor_id = this.querySelector("#sensor_id");
         this.refresh();
 
         this.deleteButton.addEventListener("click", () =>
@@ -27,7 +28,11 @@ export class DebugComponent extends HTMLElement {
                 this.refresh();
             }));
         this.sendButton.addEventListener("click", () => {
-            sendMeasurement("0", this.temp.value,
+            let id;
+            if (this.sensor_id.value == "") id = "0";
+            else id = this.sensor_id.value;
+            console.log(id)
+            sendMeasurement(id, this.temp.value,
                 this.hum.value,
                 this.pres.value).then(() =>
                     this.refresh());

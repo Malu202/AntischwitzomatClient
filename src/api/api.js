@@ -19,7 +19,7 @@ export function getMeasurements() {
 export function sendMeasurement(id, temp, hum, pres) {
     return fetch(`${environment.API_URL}measurements`, {
         body: JSON.stringify({
-            i: "0",
+            i: id,
             t: temp * 100,
             h: hum * 100,
             p: pres * 10000
