@@ -24,10 +24,6 @@ export function createHomeComponent() {
 
     getRoomMeasurements().then(rooms => {
 
-        var response = rooms;
-        console.log("rooms: " + JSON.stringify(rooms));
-
-
         let roomcount = Object.keys(rooms).length;
         roomIds = Object.keys(rooms);
 
@@ -46,39 +42,68 @@ export function createHomeComponent() {
                 station.temps.push(measurements[i].temperature);
                 station.hums.push(measurements[i].humidity);
                 station.press.push(measurements[i].pressure);
+
+                // const time = date.getHours() + ":" + date.getMinutes();
+                // station.timeLabels.push(time);
             }
         }
         for (var i = roomcount - 1; i >= 0; i--) {
             weatherStations[roomIds[i]].addGaugePanel(i);
         }
 
-        // if (false) return false;
-
-        for (var i = 0; i < response.length; i += (response.length - 1) || 1) {
-            const date = (new Date(response[i].time));
-            const time = date.getHours() + ":" + date.getMinutes();
-            weatherStations[ids[0]].timeLabels.push(time);
-        }
+        // for (var i = 0; i < response.length; i += (response.length - 1) || 1) {
+        //     const date = (new Date(response[i].time));
+        //     const time = date.getHours() + ":" + date.getMinutes();
+        //     weatherStations[ids[0]].timeLabels.push(time);
+        // }
 
         const timeLabelCount = 4;
-        const plottedTime = (weatherStations[roomIds[0]].times[weatherStations[roomIds[0]].times.length - 1] - weatherStations[roomIds[0]].times[0]) * 1000;
+        let earliestMeasurement = Infinity;
+        let latestMeasurement = 0;
+        for (let i = 0; i < roomcount; i++) {
+            let stationsEarliestMeasurement = weatherStations[roomIds[i]].times[0];
+            let stationsLatestMeasurement = weatherStations[roomIds[i]].times[weatherStations[roomIds[i]].times.length - 1];
+            if (stationsEarliestMeasurement < earliestMeasurement) earliestMeasurement = stationsEarliestMeasurement;
+            if (stationsLatestMeasurement > latestMeasurement) latestMeasurement = stationsLatestMeasurement;
+        }
+        let plottedTime = (latestMeasurement - earliestMeasurement) * 1000;
+
         const stepSize = plottedTime / (timeLabelCount - 1);
-        for (var i = 1; i < timeLabelCount - 1; i++) {
-            const labelDate = new Date((weatherStations[roomIds[0]].times[0] * 1000 + stepSize * i));
-            weatherStations[roomIds[0]].timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
+        let timeLabels = [];
+        for (var i = 0; i < timeLabelCount; i++) {
+            const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
+            timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
         }
 
-        var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
-        var suffixes = ['° ', '% ', '']
-        createPlot(weatherStations[roomIds[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
+        // var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
+        let plottableValues = ["temps", "hums", "press"];
+
+
+        var suffixes = ['° ', '% ', ''];
         tempCanvas.onclick = function () {
             plottedValue++;
             if (plottedValue > plottableValues.length - 1) plottedValue = 0;
-            createPlot(weatherStations[roomIds[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
+            createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue])
         }
+        plottedValue = plottableValues.length - 1;
+        tempCanvas.click();
     });
     var plot;
-    function createPlot(x, y, sf) {
+    function createPlot(weatherstations, value, timeLabels, sf) {
+        let graphsToPlot = [];
+        for (let i = 0; i < roomIds.length; i++) {
+            let station = weatherStations[roomIds[i]];
+            let newGraph = {
+                type: "line",
+                x: station.times,
+                y: station[value],
+                xHighlight: station.times,
+                yHighlight: station[value]
+            };
+            if (i == 0) newGraph.type = "shadow";
+            graphsToPlot.push(newGraph);
+        }
+
         plot = new Plot(tempCanvas, {
             xAxisSize: 0.08,
             yAxisSize: 0.08,
@@ -90,17 +115,9 @@ export function createHomeComponent() {
             drawGridLineX: false,
             drawGridLineY: false,
             preferredLabelStepsY: [1, 2, 5],
-            xLabelNames: weatherStations[roomIds[0]].timeLabels,
+            xLabelNames: timeLabels,
 
-            graphs: [
-                {
-                    type: "shadow",
-                    x: x,
-                    y: y,
-                    xHighlight: x,
-                    yHighlight: y
-                }
-            ]
+            graphs: graphsToPlot
         });
     }
 
