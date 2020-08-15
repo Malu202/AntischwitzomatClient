@@ -1,13 +1,15 @@
 import * as template from "./home.html";
 import { environment } from "../../environment";
+import { getRoomMeasurements } from "../../api/api";
+
 
 export function createHomeComponent() {
     let div = document.createElement("div");
     div.id = "dashboard";
     div.innerHTML = template;
 
-    var ids = ["esp"];
-    ids = [0];
+    // var ids = ["esp"];
+    // ids = [0];
 
     const log = div.querySelector("#output");
     const tempCanvas = div.querySelector("#tempPlot");
@@ -15,34 +17,39 @@ export function createHomeComponent() {
     const weatherStations = {};
 
     var gaugePanels = [];
-    addPanels(ids.length);
+    addPanels(2);
 
-    const tempRequest = new XMLHttpRequest();
-    tempRequest.onload = onDataReceived;
-    tempRequest.open('get', environment.api);
-    tempRequest.send();
-
+    let roomIds = [];
     var plottedValue = 0;
-    function onDataReceived(data) {
-        var response = JSON.parse(this.responseText);
 
-        for (var i = 0; i < ids.length; i++) {
-            weatherStations[ids[i]] = new WeatherStation();
+    getRoomMeasurements().then(rooms => {
+
+        var response = rooms;
+        console.log("rooms: " + JSON.stringify(rooms));
+
+
+        let roomcount = Object.keys(rooms).length;
+        roomIds = Object.keys(rooms);
+
+        for (var i = 0; i < roomcount; i++) {
+            weatherStations[roomIds[i]] = new WeatherStation();
         }
-        for (var i = 0; i < response.length; i++) {
-            const station = weatherStations[response[i].id];
+        for (var j = 0; j < roomcount; j++) {
+            const station = weatherStations[roomIds[j]];
             // const station = weatherStations[response[i].sensor_id];
-
-
             if (station == undefined) continue;
-            const date = (new Date(response[i].time));
-            station.times.push((date.getTime() / 1000));
-            station.temps.push(response[i].temperature);
-            station.hums.push(response[i].humidity);
-            station.press.push(response[i].pressure);
+
+            let measurements = rooms[roomIds[j]];
+            for (var i = 0; i < measurements.length; i++) {
+                const date = (new Date(measurements[i].time));
+                station.times.push((date.getTime() / 1000));
+                station.temps.push(measurements[i].temperature);
+                station.hums.push(measurements[i].humidity);
+                station.press.push(measurements[i].pressure);
+            }
         }
-        for (var i = ids.length - 1; i >= 0; i--) {
-            weatherStations[ids[i]].addGaugePanel(i);
+        for (var i = roomcount - 1; i >= 0; i--) {
+            weatherStations[roomIds[i]].addGaugePanel(i);
         }
 
         // if (false) return false;
@@ -54,23 +61,22 @@ export function createHomeComponent() {
         }
 
         const timeLabelCount = 4;
-        const plottedTime = (weatherStations[ids[0]].times[weatherStations[ids[0]].times.length - 1] - weatherStations[ids[0]].times[0]) * 1000;
+        const plottedTime = (weatherStations[roomIds[0]].times[weatherStations[roomIds[0]].times.length - 1] - weatherStations[roomIds[0]].times[0]) * 1000;
         const stepSize = plottedTime / (timeLabelCount - 1);
         for (var i = 1; i < timeLabelCount - 1; i++) {
-            const labelDate = new Date((weatherStations[ids[0]].times[0] * 1000 + stepSize * i));
-            weatherStations[ids[0]].timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
+            const labelDate = new Date((weatherStations[roomIds[0]].times[0] * 1000 + stepSize * i));
+            weatherStations[roomIds[0]].timeLabels.splice(i, 0, labelDate.getHours() + ":" + labelDate.getMinutes());
         }
 
-        var plottableValues = [weatherStations[ids[0]].temps, weatherStations[ids[0]].hums, weatherStations[ids[0]].press];
+        var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
         var suffixes = ['° ', '% ', '']
-        createPlot(weatherStations[ids[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
+        createPlot(weatherStations[roomIds[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
         tempCanvas.onclick = function () {
             plottedValue++;
             if (plottedValue > plottableValues.length - 1) plottedValue = 0;
-            createPlot(weatherStations[ids[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
+            createPlot(weatherStations[roomIds[0]].times, plottableValues[plottedValue], suffixes[plottedValue])
         }
-    }
-
+    });
     var plot;
     function createPlot(x, y, sf) {
         plot = new Plot(tempCanvas, {
@@ -84,7 +90,7 @@ export function createHomeComponent() {
             drawGridLineX: false,
             drawGridLineY: false,
             preferredLabelStepsY: [1, 2, 5],
-            xLabelNames: weatherStations[ids[0]].timeLabels,
+            xLabelNames: weatherStations[roomIds[0]].timeLabels,
 
             graphs: [
                 {

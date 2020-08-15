@@ -131,3 +131,15 @@ export async function createNotification(text, room1, room2, type, amount, value
     }).then(res => res.json())
         .then(setUserId);
 }
+
+export function getRoomMeasurements() {
+    let userId = getUserId();
+    if (null == userId) {
+        return Promise.resolve([]);
+    }
+    return fetch(`${environment.API_URL}roomMeasurements?user_id=${getUserId()}`, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(res => res.json());
+}
