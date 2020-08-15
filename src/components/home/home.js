@@ -25,6 +25,8 @@ export function createHomeComponent() {
 
         let roomcount = Object.keys(rooms).length;
         roomIds = Object.keys(rooms);
+        if (roomcount == 0) return;
+
         addPanels(roomcount);
 
         for (var i = 0; i < roomcount; i++) {
