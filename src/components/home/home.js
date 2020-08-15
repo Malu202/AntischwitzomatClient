@@ -17,7 +17,6 @@ export function createHomeComponent() {
     const weatherStations = {};
 
     var gaugePanels = [];
-    addPanels(2);
 
     let roomIds = [];
     var plottedValue = 0;
@@ -26,6 +25,7 @@ export function createHomeComponent() {
 
         let roomcount = Object.keys(rooms).length;
         roomIds = Object.keys(rooms);
+        addPanels(roomcount);
 
         for (var i = 0; i < roomcount; i++) {
             weatherStations[roomIds[i]] = new WeatherStation();
@@ -35,7 +35,8 @@ export function createHomeComponent() {
             // const station = weatherStations[response[i].sensor_id];
             if (station == undefined) continue;
 
-            let measurements = rooms[roomIds[j]];
+            station.name = rooms[roomIds[j]].name;
+            let measurements = rooms[roomIds[j]].measurements;
             for (var i = 0; i < measurements.length; i++) {
                 const date = (new Date(measurements[i].time));
                 station.times.push((date.getTime() / 1000));
@@ -128,19 +129,23 @@ export function createHomeComponent() {
         this.temps = [];
         this.hums = [];
         this.press = [];
+        this.name = "";
     }
 
     WeatherStation.prototype.addGaugePanel = function (position) {
         const tempDiv = gaugePanels[position][0];
         const humDiv = gaugePanels[position][1];
         const pressDiv = gaugePanels[position][2];
+        const heading = gaugePanels[position][3];
+
+        heading.innerText = this.name;
 
         //Just for mockup:
-        if (this.temps[this.temps.length - 1] == undefined) {
-            this.temps[this.temps.length - 1] = Math.round(Math.random() * 35 + 5);
-            this.hums[this.hums.length - 1] = Math.round(Math.random() * 70 + 30);
-            this.press[this.press.length - 1] = Math.round(Math.random() * 15 + 1000);
-        }
+        // if (this.temps[this.temps.length - 1] == undefined) {
+        //     this.temps[this.temps.length - 1] = Math.round(Math.random() * 35 + 5);
+        //     this.hums[this.hums.length - 1] = Math.round(Math.random() * 70 + 30);
+        //     this.press[this.press.length - 1] = Math.round(Math.random() * 15 + 1000);
+        // }
 
         var temp = Math.round(this.temps[this.temps.length - 1]);
         var hum = Math.round(this.hums[this.hums.length - 1]);
@@ -155,6 +160,8 @@ export function createHomeComponent() {
     }
 
     function addPanels(amount) {
+        const cardBlueprint = div.querySelector('#gaugeCard');
+        const headingBlueprint = div.querySelector("#heading");
         const gaugesBlueprint = div.querySelector("#gauges");
         const tempGaugeBlueprint = div.querySelector("#tempGauge");
         const humGaugeBlueprint = div.querySelector("#humGauge");
@@ -162,7 +169,15 @@ export function createHomeComponent() {
 
         for (var i = 0; i < amount; i++) {
             const parent = document.createElement("div");
-            parent.classList = gaugesBlueprint.classList;
+            parent.classList = cardBlueprint.classList;
+
+
+            const gaugesDiv = document.createElement("div");
+            gaugesDiv.classList = gaugesBlueprint.classList;
+
+            const heading = document.createElement("h5");
+            heading.classList = headingBlueprint.classList;
+            heading.innerText = "test"
 
             const tempDiv = document.createElement("div");
             tempDiv.classList = tempGaugeBlueprint.classList;
@@ -171,12 +186,15 @@ export function createHomeComponent() {
             const pressDiv = document.createElement("div");
             pressDiv.classList = presGaugeBlueprint.classList;
 
-            parent.appendChild(tempDiv);
-            parent.appendChild(humDiv);
-            parent.appendChild(pressDiv);
+            gaugesDiv.appendChild(tempDiv);
+            gaugesDiv.appendChild(humDiv);
+            gaugesDiv.appendChild(pressDiv);
+
+            parent.appendChild(heading);
+            parent.appendChild(gaugesDiv);
             div.insertBefore(parent, div.firstChild);
 
-            const gaugePanel = [tempDiv, humDiv, pressDiv];
+            const gaugePanel = [tempDiv, humDiv, pressDiv, heading];
             gaugePanels.push(gaugePanel);
         }
     }

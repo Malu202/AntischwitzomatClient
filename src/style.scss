@@ -44,12 +44,16 @@ body {
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    flex: 1 1 1px;
-    margin-bottom: 16px;
     overflow: hidden;
+    height: 100%;
+}
+.gaugesCard{
+    flex: 1 1 1px;
+    padding: 0px;
+    margin-bottom: 16px;
 }
 
-#gauges {
+#gaugeCard {
     display: none;
 }
 
@@ -60,7 +64,9 @@ body {
 .gauges * {
     flex: 1 1 1px;
 }
-
+.gaugeHeading{
+    margin: 8px 0px 4px 8px ;
+}
 
 #tempPlot {
     flex: 8 1 1px;
