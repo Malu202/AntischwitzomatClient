@@ -31,7 +31,6 @@ export class DebugComponent extends HTMLElement {
             let id;
             if (this.sensor_id.value == "") id = "0";
             else id = this.sensor_id.value;
-            console.log(id)
             sendMeasurement(id, this.temp.value,
                 this.hum.value,
                 this.pres.value).then(() =>
@@ -49,8 +48,7 @@ export class DebugComponent extends HTMLElement {
                 dataLine.innerText = (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].sensor_id;
                 data.appendChild(dataLine);
             }
-            this.log.appendChild(data)
-            console.log(response);
+            this.log.appendChild(data);
         });
     }
 

@@ -16,7 +16,6 @@ function setupNotifications() {
                 function (pushSubscription) {
                     // console.log(pushSubscription.subscriptionId);
                     // console.log(pushSubscription.endpoint);
-                    console.log(JSON.stringify(pushSubscription));
                     // sendNotificationDetails(pushSubscription);
                     isNotificationSetup = true;
                     return;

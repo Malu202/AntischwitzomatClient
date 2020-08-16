@@ -80,19 +80,23 @@ export function createHomeComponent() {
 
         // var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
         let plottableValues = ["temps", "hums", "press"];
+        let headlines = ["Temperature", "Humidity", "Pressure"];
+        let colors = ["#4caf50", "#0077c2", "#9c64a6"];
+        let shadowColors = ["#80e27e", "#42a5f5", "#ce93d8"];
+
 
 
         var suffixes = ['° ', '% ', ''];
         tempCanvas.onclick = function () {
             plottedValue++;
             if (plottedValue > plottableValues.length - 1) plottedValue = 0;
-            createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue])
+            createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue], colors[plottedValue], shadowColors[plottedValue], headlines[plottedValue])
         }
         plottedValue = plottableValues.length - 1;
         tempCanvas.click();
     });
     var plot;
-    function createPlot(weatherstations, value, timeLabels, sf) {
+    function createPlot(weatherStations, value, timeLabels, sf, color, shadowColor, headline) {
         let graphsToPlot = [];
         for (let i = 0; i < roomIds.length; i++) {
             let station = weatherStations[roomIds[i]];
@@ -101,13 +105,18 @@ export function createHomeComponent() {
                 x: station.times,
                 y: station[value],
                 xHighlight: station.times,
-                yHighlight: station[value]
+                yHighlight: station[value],
+                shadowColor: shadowColor
             };
             if (i == 0) newGraph.type = "shadow";
             graphsToPlot.push(newGraph);
         }
 
+        tempCanvas.parentElement.style.background = color;
+        tempCanvas.parentElement.firstElementChild.innerText = headline;
+
         plot = new Plot(tempCanvas, {
+            backgroundColor: color,
             xAxisSize: 0.08,
             yAxisSize: 0.08,
             // topMargin: 0.05,
@@ -179,7 +188,7 @@ export function createHomeComponent() {
 
             const heading = document.createElement("h5");
             heading.classList = headingBlueprint.classList;
-            heading.innerText = "test"
+            heading.innerText = "Room"
 
             const tempDiv = document.createElement("div");
             tempDiv.classList = tempGaugeBlueprint.classList;

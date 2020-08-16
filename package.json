@@ -32,6 +32,7 @@
     "@material/select": "^3.2.0",
     "@material/textfield": "3",
     "@material/top-app-bar": "3",
+    "@material/typography": "3",
     "route-it": "^1.1.0"
   }
 }

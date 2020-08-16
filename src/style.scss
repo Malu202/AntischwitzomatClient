@@ -10,7 +10,7 @@ $mdc-theme-on-secondary: #fff;
 @import "@material/select/mdc-select";
 @import "@material/textfield/mdc-text-field";
 @import "@material/fab/mdc-fab";
-
+@import "@material/typography/mdc-typography";
 
 html,
 body {
@@ -26,7 +26,9 @@ body {
     height: 100%;
     width: 100%;
 }
-
+.mdc-top-app-bar__title{
+    user-select: none;
+}
 #dashboard,
 #rooms,
 #notifications {
@@ -65,11 +67,29 @@ body {
     flex: 1 1 1px;
 }
 .gaugeHeading{
-    margin: 8px 0px 4px 8px ;
+    margin: 16px 16px 8px 16px;
+    // text-align:center;
+    user-select: none; 
+
 }
 
-#tempPlot {
-    flex: 8 1 1px;
+#tempCard {
+    flex: 4 1 1px;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    color: #FFF;
+    cursor: pointer;
+}
+#tempPlot{
+    // height: 100%;
+    // width: 100%;
+    flex: 1 1 auto;
+}
+#plotHeading{
+    text-align: center;
+    user-select: none; 
+    margin-bottom: 0px;
 }
 
 #notifications>*,
