@@ -1,6 +1,6 @@
 var serviceWorkerOption = {
   "assets": [
-    "/AntischwitzomatClient/main.758f3276d0f9ae1da92a.css",
+    "/AntischwitzomatClient/main.c9f08d22508e7d242df7.css",
     "/AntischwitzomatClient/c4851014db32f99b1f7c.bundle.js",
     "/AntischwitzomatClient/1.8cb49d06c9265bf8df44.bundle.js",
     "/AntischwitzomatClient/index.html"
