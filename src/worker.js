@@ -45,8 +45,8 @@ self.addEventListener("push", event => {
     const title = 'Antischwitzomat';
     const options = {
         body: event.data.text(),
-        // icon: 'images/icon.png',
-        // badge: 'images/badge.png'
+        icon: 'favicons/android-chrome-192x192.png',
+        badge: 'favicons/android-chrome-192x192.png'
     };
 
     event.waitUntil(
