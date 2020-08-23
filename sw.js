@@ -1,8 +1,16 @@
 var serviceWorkerOption = {
   "assets": [
+    "/AntischwitzomatClient/favicons/android-chrome-192x192.png",
+    "/AntischwitzomatClient/favicons/apple-touch-icon.png",
+    "/AntischwitzomatClient/favicons/browserconfig.xml",
+    "/AntischwitzomatClient/favicons/favicon-16x16.png",
+    "/AntischwitzomatClient/favicons/favicon-32x32.png",
+    "/AntischwitzomatClient/favicons/favicon.ico",
+    "/AntischwitzomatClient/favicons/mstile-150x150.png",
+    "/AntischwitzomatClient/favicons/safari-pinned-tab.svg",
     "/AntischwitzomatClient/main.c9f08d22508e7d242df7.css",
-    "/AntischwitzomatClient/c4851014db32f99b1f7c.bundle.js",
-    "/AntischwitzomatClient/1.8cb49d06c9265bf8df44.bundle.js",
+    "/AntischwitzomatClient/e20a6a4866e0997c3eea.bundle.js",
+    "/AntischwitzomatClient/1.223349836af862bfc4f3.bundle.js",
     "/AntischwitzomatClient/index.html"
   ]
 };
