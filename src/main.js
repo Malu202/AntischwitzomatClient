@@ -4,6 +4,7 @@ import { Router, ContainerRouteRenderer } from "route-it"
 import { RouteResolver } from "./route-resolver";
 import "./style.scss";
 import "./favicons.js";
+import "../site.webmanifest";
 import { environment } from "./environment";
 import { convertLinks } from "./components/convert-links";
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
