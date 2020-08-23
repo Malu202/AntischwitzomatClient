@@ -43,6 +43,17 @@ module.exports = (env, argv) => {
                             }
                         }
                     ]
+                },
+                {
+                    test: /favicons(\\|\/).+\.(svg|png|ico|xml|json)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: 'favicons/[name].[ext]',
+                            },
+                        },
+                    ],
                 }
             ],
         },
