@@ -62,6 +62,13 @@ export class RoomEditor extends HTMLElement {
     }
 
     setSensors(sensors) {
+        const sensorMap = {
+            102: "Kagran",
+            104: "Schlachthausgasse",
+            100: "Wien/Hohe Warte",
+            101: "Wien/Schwechat",
+            103: "Hendl"
+        };
         for (let sensorSelect of [
             { select: this.sensor1Select, required: true },
             { select: this.sensor2Select, required: false }]) {
@@ -72,7 +79,8 @@ export class RoomEditor extends HTMLElement {
             }
             for (let sensor of sensors) {
                 let option = document.createElement("option");
-                option.innerText = `Sensor ${sensor.sensor_id}`;
+                option.innerText = sensorMap[sensor.sensor_id] ||
+                    `Sensor ${sensor.sensor_id}`;
                 option.value = sensor.sensor_id;
                 sensorSelect.select.appendChild(option);
             }
