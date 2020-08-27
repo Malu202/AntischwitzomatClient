@@ -82,9 +82,8 @@ body {
 }
 
 i.material-icons {
-    display: inline-flex;
-    vertical-align: center;
     font-size: 14px;
+    padding-bottom: 3px;
 }
 
 #tempCard {
@@ -94,6 +93,11 @@ i.material-icons {
     align-items: stretch;
     color: #FFF;
     cursor: pointer;
+}
+
+.subsensortext {
+    display: inline-flex;
+    align-items: center;
 }
 
 #tempPlot {

@@ -187,7 +187,7 @@ export function createHomeComponent() {
         if (battery != 0) battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
         else battery = "";
         let time = new Date(this.times[this.times.length - 1] * 1000).toLocaleTimeString().slice(0, -3);
-        heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2'>(" + time + battery + ")</span";
+        heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ")</span";
 
         //Just for mockup:
         // if (this.temps[this.temps.length - 1] == undefined) {
