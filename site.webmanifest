@@ -1,6 +1,7 @@
 {
     "name": "Antischwitzomat",
     "short_name": "Antischwitzomat",
+    "description": "Damit man nicht schwitzt zaus.",
     "icons": [
         {
             "src": "./favicons/android-chrome-192x192.png",
@@ -8,7 +9,8 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "start_url": "./",
+    "display": "standalone",
+    "theme_color": "#4f93ff",
+    "background_color": "#ffffff"
 }

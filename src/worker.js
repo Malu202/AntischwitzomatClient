@@ -55,5 +55,5 @@ self.addEventListener("push", event => {
 });
 
 self.addEventListener("notificationclick", event => {
-    event.waitUntil(clients.openWindow("/"));
+    event.waitUntil(clients.openWindow("/AntischwitzomatClient"));
 });

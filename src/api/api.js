@@ -106,30 +106,32 @@ export function deleteNotification(notification_id) {
     }).then(res => res.text());
 }
 
-export async function createNotification(text, room1, room2, type, amount, value) {
-    let pushNotificationKeys = await getPushSubscription();
-    console.log(pushNotificationKeys)
-    return fetch(`${environment.API_URL}notifications`, {
-        body: JSON.stringify({
-            user_id: getUserId(),
-            type: type,
-            value: value,
-            room_id1: room1,
-            room_id2: room2,
-            amount: amount,
-            message: text,
-            endpoint: pushNotificationKeys.endpoint,
-            keys: pushNotificationKeys.keys
-            // key_p256dh: pushNotificationKeys.keys.p256dh,
-            // key_auth: pushNotificationKeys.keys.auth
-        }),
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    }).then(res => res.json())
-        .then(setUserId);
+export function createNotification(text, room1, room2, type, amount, value) {
+    return getPushSubscription().then(keys => {
+        let pushNotificationKeys = JSON.parse(JSON.stringify(keys));
+        console.log(pushNotificationKeys);
+        return fetch(`${environment.API_URL}notifications`, {
+            body: JSON.stringify({
+                user_id: getUserId(),
+                type: type,
+                value: value,
+                room_id1: room1,
+                room_id2: room2,
+                amount: amount,
+                message: text,
+                endpoint: pushNotificationKeys.endpoint,
+                keys: pushNotificationKeys.keys
+                // key_p256dh: pushNotificationKeys.keys.p256dh,
+                // key_auth: pushNotificationKeys.keys.auth
+            }),
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+            .then(setUserId);
+    });
 }
 
 export function getRoomMeasurements() {

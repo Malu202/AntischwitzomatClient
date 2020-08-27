@@ -1,4 +1,4 @@
-$mdc-theme-primary: rgb(31, 90, 33);
+$mdc-theme-primary: #4f93ff;
 $mdc-theme-secondary: #ff8f00;
 $mdc-theme-on-primary: #fff;
 $mdc-theme-on-secondary: #fff;
@@ -26,9 +26,15 @@ body {
     height: 100%;
     width: 100%;
 }
-.mdc-top-app-bar__title{
+
+.mdc-top-app-bar__title {
     user-select: none;
 }
+
+.mdc-top-app-bar__row {
+    color: white !important;
+}
+
 #dashboard,
 #rooms,
 #notifications {
@@ -49,7 +55,8 @@ body {
     overflow: hidden;
     height: 100%;
 }
-.gaugesCard{
+
+.gaugesCard {
     flex: 1 1 1px;
     padding: 0px;
     margin-bottom: 16px;
@@ -60,18 +67,24 @@ body {
     display: none;
 }
 
-#output{
+#output {
     margin-top: 16px;
 }
 
 .gauges * {
     flex: 1 1 1px;
 }
-.gaugeHeading{
+
+.gaugeHeading {
     margin: 16px 16px 8px 16px;
     // text-align:center;
-    user-select: none; 
+    user-select: none;
+}
 
+i.material-icons {
+    display: inline-flex;
+    vertical-align: center;
+    font-size: 14px;
 }
 
 #tempCard {
@@ -82,14 +95,16 @@ body {
     color: #FFF;
     cursor: pointer;
 }
-#tempPlot{
+
+#tempPlot {
     // height: 100%;
     // width: 100%;
     flex: 1 1 auto;
 }
-#plotHeading{
+
+#plotHeading {
     text-align: center;
-    user-select: none; 
+    user-select: none;
     margin-bottom: 0px;
 }
 
@@ -184,4 +199,14 @@ select option {
 
 #home-button {
     cursor: pointer;
+}
+
+.debug-table {
+    td {
+        padding: 0 1em;
+    }
+
+    thead td {
+        font-weight: bold;
+    }
 }

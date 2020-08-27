@@ -1,6 +1,16 @@
 import * as template from "./home.html";
-import { environment } from "../../environment";
-import { getRoomMeasurements } from "../../api/api";
+
+import {
+    environment
+}
+
+    from "../../environment";
+
+import {
+    getRoomMeasurements
+}
+
+    from "../../api/api";
 
 
 export function createHomeComponent() {
@@ -14,7 +24,9 @@ export function createHomeComponent() {
     const log = div.querySelector("#output");
     const tempCanvas = div.querySelector("#tempPlot");
 
-    const weatherStations = {};
+    const weatherStations = {}
+
+        ;
 
     var gaugePanels = [];
 
@@ -32,6 +44,7 @@ export function createHomeComponent() {
         for (var i = 0; i < roomcount; i++) {
             weatherStations[roomIds[i]] = new WeatherStation();
         }
+
         for (var j = 0; j < roomcount; j++) {
             const station = weatherStations[roomIds[j]];
             // const station = weatherStations[response[i].sensor_id];
@@ -39,17 +52,20 @@ export function createHomeComponent() {
 
             station.name = rooms[roomIds[j]].name;
             let measurements = rooms[roomIds[j]].measurements;
+
             for (var i = 0; i < measurements.length; i++) {
                 const date = (new Date(measurements[i].time));
                 station.times.push((date.getTime() / 1000));
                 station.temps.push(measurements[i].temperature);
                 station.hums.push(measurements[i].humidity);
                 station.press.push(measurements[i].pressure);
+                station.vol.push(measurements[i].voltage);
 
                 // const time = date.getHours() + ":" + date.getMinutes();
                 // station.timeLabels.push(time);
             }
         }
+
         for (var i = roomcount - 1; i >= 0; i--) {
             weatherStations[roomIds[i]].addGaugePanel(i);
         }
@@ -63,43 +79,55 @@ export function createHomeComponent() {
         const timeLabelCount = 4;
         let earliestMeasurement = Infinity;
         let latestMeasurement = 0;
+
         for (let i = 0; i < roomcount; i++) {
             let stationsEarliestMeasurement = weatherStations[roomIds[i]].times[0];
             let stationsLatestMeasurement = weatherStations[roomIds[i]].times[weatherStations[roomIds[i]].times.length - 1];
             if (stationsEarliestMeasurement < earliestMeasurement) earliestMeasurement = stationsEarliestMeasurement;
             if (stationsLatestMeasurement > latestMeasurement) latestMeasurement = stationsLatestMeasurement;
         }
+
         let plottedTime = (latestMeasurement - earliestMeasurement) * 1000;
 
         const stepSize = plottedTime / (timeLabelCount - 1);
         let timeLabels = [];
+
         for (var i = 0; i < timeLabelCount; i++) {
             const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
             timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
         }
 
         // var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
-        let plottableValues = ["temps", "hums", "press"];
-        let headlines = ["Temperature", "Humidity", "Pressure"];
-        let colors = ["#4caf50", "#0077c2", "#9c64a6"];
-        let shadowColors = ["#80e27e", "#42a5f5", "#ce93d8"];
+        let plottableValues = ["temps", "hums", "press", "vol"];
+        let headlines = ["Temperature", "Humidity", "Pressure", "Voltage"];
+        let colors = ["#4caf50", "#0077c2", "#9c64a6", "#018786"];
+        let shadowColors = ["#80e27e", "#42a5f5", "#ce93d8", "#03DAC6"];
 
 
 
-        var suffixes = ['° ', '% ', ''];
+        var suffixes = ['° ', '% ', '', '% '];
+
         tempCanvas.onclick = function () {
             plottedValue++;
             if (plottedValue > plottableValues.length - 1) plottedValue = 0;
             createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue], colors[plottedValue], shadowColors[plottedValue], headlines[plottedValue])
         }
+
         plottedValue = plottableValues.length - 1;
         tempCanvas.click();
-    });
+    }
+
+    );
     var plot;
+
     function createPlot(weatherStations, value, timeLabels, sf, color, shadowColor, headline) {
         let graphsToPlot = [];
+
         for (let i = 0; i < roomIds.length; i++) {
             let station = weatherStations[roomIds[i]];
+
+            if (station[value][0] == null) continue;
+
             let newGraph = {
                 type: "line",
                 x: station.times,
@@ -107,7 +135,9 @@ export function createHomeComponent() {
                 xHighlight: station.times,
                 yHighlight: station[value],
                 shadowColor: shadowColor
-            };
+            }
+
+                ;
             if (i == 0) newGraph.type = "shadow";
             graphsToPlot.push(newGraph);
         }
@@ -130,7 +160,9 @@ export function createHomeComponent() {
             xLabelNames: timeLabels,
 
             graphs: graphsToPlot
-        });
+        }
+
+        );
     }
 
 
@@ -140,6 +172,7 @@ export function createHomeComponent() {
         this.temps = [];
         this.hums = [];
         this.press = [];
+        this.vol = [];
         this.name = "";
     }
 
@@ -149,7 +182,12 @@ export function createHomeComponent() {
         const pressDiv = gaugePanels[position][2];
         const heading = gaugePanels[position][3];
 
-        heading.innerText = this.name;
+
+        let battery = Math.round(this.vol[this.vol.length - 1]);
+        if (battery != 0) battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
+        else battery = "";
+        let time = new Date(this.times[this.times.length - 1] * 1000).toLocaleTimeString().slice(0, -3);
+        heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2'>(" + time + battery + ")</span";
 
         //Just for mockup:
         // if (this.temps[this.temps.length - 1] == undefined) {
@@ -163,9 +201,9 @@ export function createHomeComponent() {
         var press = Math.round(this.press[this.press.length - 1]);
 
         const tempGauge = new Gauge(tempDiv, "", temp, "°", 5, 40, "#fff", "#000");
-        tempGauge.animateValue(temp, 800)
+        tempGauge.animateValue(temp, 800);
         const humGauge = new Gauge(humDiv, "", hum, "%", 30, 99, "#fff", "#000");
-        humGauge.animateValue(hum, 800)
+        humGauge.animateValue(hum, 800);
         const pressGauge = new Gauge(pressDiv, "", press, " mbar", 950, 1050, "#fff", "#000");
         pressGauge.animateValue(press, 800);
     }
@@ -205,7 +243,10 @@ export function createHomeComponent() {
             parent.appendChild(gaugesDiv);
             div.insertBefore(parent, div.firstChild);
 
-            const gaugePanel = [tempDiv, humDiv, pressDiv, heading];
+            const gaugePanel = [tempDiv,
+                humDiv,
+                pressDiv,
+                heading];
             gaugePanels.push(gaugePanel);
         }
     }

@@ -40,7 +40,7 @@ export class NotificationEditor extends HTMLElement {
     }
 
 
-    async save() {
+    save() {
 
         let messagetext = this.messagetext.value;
         this.nameInvalid.style.display = !messagetext ? "block" : "none";

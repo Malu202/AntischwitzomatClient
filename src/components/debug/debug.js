@@ -41,14 +41,45 @@ export class DebugComponent extends HTMLElement {
     refresh() {
         getMeasurements().then(response => {
             this.log.innerHTML = "";
-            var data = document.createElement("div");
+            var table = document.createElement("table");
+
+            table.className = "debug-table";
+            var thead = document.createElement("thead");
+            var hr = document.createElement("tr");
+            let createHead = (value) => {
+                let td = document.createElement("td");
+                td.innerText = value;
+                hr.appendChild(td);
+            };
+            createHead("Time");
+            createHead("Sensor ID");
+            createHead("Temperature");
+            createHead("Humidity");
+            createHead("Pressure");
+            createHead("Battery");
+            thead.appendChild(hr);
+            var tbody = document.createElement("tbody");
+            table.appendChild(thead);
+            table.appendChild(tbody);
             for (var i = response.length - 1; i >= 0; i--) {
-                var dataLine = document.createElement("div");
-                // data.innerHTML += (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].id + '<br />';
-                dataLine.innerText = (new Date(response[i].time)).toLocaleString() + " " + response[i].temperature + "°C " + response[i].humidity + "% " + response[i].pressure + "mbar" + " " + response[i].sensor_id;
-                data.appendChild(dataLine);
+                let row = document.createElement("tr");
+                tbody.appendChild(row);
+                let createCell = (value) => {
+                    let td = document.createElement("td");
+                    td.innerText = value;
+                    row.appendChild(td);
+                };
+                createCell(new Date(response[i].time).toLocaleString());
+                createCell(response[i].sensor_id);
+                createCell(response[i].temperature + "°C ");
+                createCell(response[i].humidity + "% ");
+                createCell(response[i].pressure + " mbar ");
+
+                let voltage = "-";
+                if (response[i].voltage != null) voltage = response[i].voltage + "% ";
+                createCell(voltage);
             }
-            this.log.appendChild(data);
+            this.log.appendChild(table);
         });
     }
 
