@@ -53,13 +53,16 @@ export function createHomeComponent() {
             station.name = rooms[roomIds[j]].name;
             let measurements = rooms[roomIds[j]].measurements;
 
+            let voltageMin = 2;
+            let voltageMax = 3.2;
+            let voltageMinDigital = (1024 / voltageMax) * voltageMin;
             for (var i = 0; i < measurements.length; i++) {
                 const date = (new Date(measurements[i].time));
                 station.times.push((date.getTime() / 1000));
                 station.temps.push(measurements[i].temperature);
                 station.hums.push(measurements[i].humidity);
                 station.press.push(measurements[i].pressure);
-                station.vol.push(measurements[i].voltage);
+                station.vol.push((measurements[i].voltage - voltageMinDigital / (1024 - voltageMinDigital)));
 
                 // const time = date.getHours() + ":" + date.getMinutes();
                 // station.timeLabels.push(time);
