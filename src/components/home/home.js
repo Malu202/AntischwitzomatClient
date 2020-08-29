@@ -62,7 +62,7 @@ export function createHomeComponent() {
                 station.temps.push(measurements[i].temperature);
                 station.hums.push(measurements[i].humidity);
                 station.press.push(measurements[i].pressure);
-                station.vol.push((measurements[i].voltage - voltageMinDigital / (1024 - voltageMinDigital)));
+                station.vol.push((measurements[i].voltage - voltageMinDigital) / (1024 - voltageMinDigital));
 
                 // const time = date.getHours() + ":" + date.getMinutes();
                 // station.timeLabels.push(time);
