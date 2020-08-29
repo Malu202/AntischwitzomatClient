@@ -64,7 +64,7 @@ export function createHomeComponent() {
                 station.press.push(measurements[i].pressure);
 
                 let voltageDigital = measurements[i].voltage;
-                if (voltageDigital != null) station.vol.push((voltageDigital - voltageMinDigital) / (1024 - voltageMinDigital));
+                if (voltageDigital != null) station.vol.push(((voltageDigital - voltageMinDigital) / (1024 - voltageMinDigital)) * 100);
                 else station.vol.push(null);
                 // const time = date.getHours() + ":" + date.getMinutes();
                 // station.timeLabels.push(time);
