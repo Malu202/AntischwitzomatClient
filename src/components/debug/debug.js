@@ -56,6 +56,7 @@ export class DebugComponent extends HTMLElement {
             createHead("Temperature");
             createHead("Humidity");
             createHead("Pressure");
+            createHead("On time");
             createHead("Battery");
             thead.appendChild(hr);
             var tbody = document.createElement("tbody");
@@ -74,7 +75,10 @@ export class DebugComponent extends HTMLElement {
                 createCell(response[i].temperature + "°C");
                 createCell(response[i].humidity + "%");
                 createCell(response[i].pressure + "mbar");
-                createCell(response[i].ontime + "ms")
+
+                let ontime = "-";
+                if (response[i].ontime != null) ontime = response[i].ontime + "ms";
+                createCell(ontime);
 
                 let voltage = "-";
                 if (response[i].voltage != null) voltage = response[i].voltage;
