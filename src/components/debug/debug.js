@@ -71,12 +71,13 @@ export class DebugComponent extends HTMLElement {
                 };
                 createCell(new Date(response[i].time).toLocaleString());
                 createCell(response[i].sensor_id);
-                createCell(response[i].temperature + "°C ");
-                createCell(response[i].humidity + "% ");
-                createCell(response[i].pressure + " mbar ");
+                createCell(response[i].temperature + "°C");
+                createCell(response[i].humidity + "%");
+                createCell(response[i].pressure + "mbar");
+                createCell(response[i].ontime + "ms")
 
                 let voltage = "-";
-                if (response[i].voltage != null) voltage = response[i].voltage + "% ";
+                if (response[i].voltage != null) voltage = response[i].voltage;
                 createCell(voltage);
             }
             this.log.appendChild(table);
