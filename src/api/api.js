@@ -134,12 +134,12 @@ export function createNotification(text, room1, room2, type, amount, value) {
     });
 }
 
-export function getRoomMeasurements() {
+export function getRoomMeasurements(after) {
     let userId = getUserId();
     if (null == userId) {
         return Promise.resolve([]);
     }
-    return fetch(`${environment.API_URL}roomMeasurements?user_id=${getUserId()}`, {
+    return fetch(`${environment.API_URL}roomMeasurements?user_id=${getUserId()}&after=${new Date(after).toISOString()}`, {
         headers: {
             'Accept': 'application/json'
         }
