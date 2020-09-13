@@ -56,6 +56,7 @@ export class DebugComponent extends HTMLElement {
             createHead("Temperature");
             createHead("Humidity");
             createHead("Pressure");
+            createHead("On time");
             createHead("Battery");
             thead.appendChild(hr);
             var tbody = document.createElement("tbody");
@@ -71,12 +72,16 @@ export class DebugComponent extends HTMLElement {
                 };
                 createCell(new Date(response[i].time).toLocaleString());
                 createCell(response[i].sensor_id);
-                createCell(response[i].temperature + "°C ");
-                createCell(response[i].humidity + "% ");
-                createCell(response[i].pressure + " mbar ");
+                createCell(response[i].temperature + "°C");
+                createCell(response[i].humidity + "%");
+                createCell(response[i].pressure + "mbar");
+
+                let ontime = "-";
+                if (response[i].ontime != null) ontime = response[i].ontime + "ms";
+                createCell(ontime);
 
                 let voltage = "-";
-                if (response[i].voltage != null) voltage = response[i].voltage + "% ";
+                if (response[i].voltage != null) voltage = response[i].voltage;
                 createCell(voltage);
             }
             this.log.appendChild(table);
