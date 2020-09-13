@@ -23,10 +23,10 @@ export function createHomeComponent() {
 
     const log = div.querySelector("#output");
     const tempCanvas = div.querySelector("#tempPlot");
+    const tempCard = div.querySelector("#tempCard");
 
-    const weatherStations = {}
 
-        ;
+    const weatherStations = {};
 
     var gaugePanels = [];
 
@@ -112,14 +112,14 @@ export function createHomeComponent() {
 
         var suffixes = ['° ', '% ', '', '% '];
 
-        tempCanvas.onclick = function () {
+        tempCard.onclick = function () {
             plottedValue++;
             if (plottedValue > plottableValues.length - 1) plottedValue = 0;
             createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue], colors[plottedValue], shadowColors[plottedValue], headlines[plottedValue])
         }
 
         plottedValue = plottableValues.length - 1;
-        tempCanvas.click();
+        tempCard.click();
     }
 
     );
