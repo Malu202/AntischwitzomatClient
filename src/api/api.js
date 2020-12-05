@@ -110,6 +110,14 @@ export function createNotification(text, room1, room2, type, amount, value) {
     return getPushSubscription().then(keys => {
         let pushNotificationKeys = JSON.parse(JSON.stringify(keys));
         console.log(pushNotificationKeys);
+        if (value == "voltage") {
+            let voltageMin = 2;
+            let voltageMax = 3.2;
+            let voltageMinDigital = (1024 / voltageMax) * voltageMin;
+            let voltageDigital = voltageMinDigital + amount * 0.01 * (1024 - voltageMinDigital);
+            amount = voltageDigital;
+        }
+
         return fetch(`${environment.API_URL}notifications`, {
             body: JSON.stringify({
                 user_id: getUserId(),
