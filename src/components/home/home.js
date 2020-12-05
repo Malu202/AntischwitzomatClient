@@ -190,7 +190,7 @@ export function createHomeComponent() {
 
 
         let battery = this.vol[this.vol.length - 1];
-        if (battery != null) batter = Math.round(battery);
+        if (battery != null) battery = Math.round(battery);
         var temp = this.temps[this.temps.length - 1];
         var hum = this.hums[this.hums.length - 1];
         var press = this.press[this.press.length - 1];
