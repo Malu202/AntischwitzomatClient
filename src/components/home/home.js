@@ -211,17 +211,20 @@ export function createHomeComponent() {
 
 
         if (temp == null) temp = "- ";
-        else temp = Math.round(temp);
+        else temp = Math.round(temp * 10) / 10;
         if (hum == null) hum = "- ";
         else hum = Math.round(hum);
         if (press == null) press = "- ";
         else press = Math.round(press);
 
-        const tempGauge = new Gauge(tempDiv, "", temp, "°", 5, 40, "#fff", "#000");
+        let tempPrefix = "";
+        if (temp < 10 && temp >= 0) tempPrefix = " "
+
+        const tempGauge = new Gauge(tempDiv, tempPrefix, temp, "°", 5, 40, "#fff", "#000");
         tempGauge.animateValue(temp, 800);
-        const humGauge = new Gauge(humDiv, "", hum, "%", 30, 99, "#fff", "#000");
+        const humGauge = new Gauge(humDiv, " ", hum, "% ", 30, 99, "#fff", "#000");
         humGauge.animateValue(hum, 800);
-        const pressGauge = new Gauge(pressDiv, "", press, " mbar", 950, 1050, "#fff", "#000");
+        const pressGauge = new Gauge(pressDiv, "", press, " mb", 950, 1050, "#fff", "#000");
         pressGauge.animateValue(press, 800);
     }
 
