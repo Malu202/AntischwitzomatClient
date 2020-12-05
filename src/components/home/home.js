@@ -64,7 +64,8 @@ export function createHomeComponent() {
                 station.press.push(measurements[i].pressure);
 
                 let voltageDigital = measurements[i].voltage;
-                if (voltageDigital != null) station.vol.push(((voltageDigital - voltageMinDigital) / (1024 - voltageMinDigital)) * 100);
+                if (voltageDigital == 0) station.vol.push(0)
+                else if (voltageDigital != null) station.vol.push(((voltageDigital - voltageMinDigital) / (1024 - voltageMinDigital)) * 100);
                 else station.vol.push(null);
                 // const time = date.getHours() + ":" + date.getMinutes();
                 // station.timeLabels.push(time);
@@ -189,8 +190,12 @@ export function createHomeComponent() {
 
 
         let battery = Math.round(this.vol[this.vol.length - 1]);
-        if (battery != 0) battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
-        else battery = "";
+        var temp = this.temps[this.temps.length - 1];
+        var hum = this.hums[this.hums.length - 1];
+        var press = this.press[this.press.length - 1];
+
+        if (battery == 0 && temp == null && hum == null && press == null) battery = battery = ", <i class='material-icons'>battery_alert</i>" + "Battery empty";
+        else battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
         let time = new Date(this.times[this.times.length - 1] * 1000).toLocaleTimeString().slice(0, -3);
         heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ")</span";
 
@@ -201,9 +206,14 @@ export function createHomeComponent() {
         //     this.press[this.press.length - 1] = Math.round(Math.random() * 15 + 1000);
         // }
 
-        var temp = Math.round(this.temps[this.temps.length - 1]);
-        var hum = Math.round(this.hums[this.hums.length - 1]);
-        var press = Math.round(this.press[this.press.length - 1]);
+
+
+        if (temp == null) temp = "- ";
+        else temp = Math.round(temp);
+        if (hum == null) hum = "- ";
+        else hum = Math.round(hum);
+        if (press == null) press = "- ";
+        else press = Math.round(press);
 
         const tempGauge = new Gauge(tempDiv, "", temp, "°", 5, 40, "#fff", "#000");
         tempGauge.animateValue(temp, 800);

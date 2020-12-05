@@ -23,10 +23,10 @@ export class DebugComponent extends HTMLElement {
         this.sensor_id = this.querySelector("#sensor_id");
         this.refresh();
 
-        this.deleteButton.addEventListener("click", () =>
-            deleteDatabase().then(() => {
-                this.refresh();
-            }));
+        // this.deleteButton.addEventListener("click", () =>
+        //     deleteDatabase().then(() => {
+        //         this.refresh();
+        //     }));
         this.sendButton.addEventListener("click", () => {
             let id;
             if (this.sensor_id.value == "") id = "0";

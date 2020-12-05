@@ -115,6 +115,7 @@ export function createNotification(text, room1, room2, type, amount, value) {
             let voltageMax = 3.2;
             let voltageMinDigital = (1024 / voltageMax) * voltageMin;
             let voltageDigital = voltageMinDigital + amount * 0.01 * (1024 - voltageMinDigital);
+
             amount = voltageDigital;
         }
 
