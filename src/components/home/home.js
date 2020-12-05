@@ -189,13 +189,15 @@ export function createHomeComponent() {
         const heading = gaugePanels[position][3];
 
 
-        let battery = Math.round(this.vol[this.vol.length - 1]);
+        let battery = this.vol[this.vol.length - 1];
+        if (battery != null) Math.round(battery);
         var temp = this.temps[this.temps.length - 1];
         var hum = this.hums[this.hums.length - 1];
         var press = this.press[this.press.length - 1];
 
-        if (battery == 0 && temp == null && hum == null && press == null) battery = battery = ", <i class='material-icons'>battery_alert</i>" + "Battery empty";
-        else battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
+        if (battery == 0 && temp == null && hum == null && press == null) battery = battery = ", <i class='material-icons'>battery_alert</i>" + "Battery empty"; //sensor timeout
+        else if (battery != null) battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
+        else battery = ""; //external sensor
         let time = new Date(this.times[this.times.length - 1] * 1000).toLocaleTimeString().slice(0, -3);
         heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ")</span";
 
