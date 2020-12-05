@@ -10,8 +10,8 @@ var serviceWorkerOption = {
     "/AntischwitzomatClient/favicons/safari-pinned-tab.svg",
     "/AntischwitzomatClient/site.webmanifest",
     "/AntischwitzomatClient/main.1c6171403a81ce022190.css",
-    "/AntischwitzomatClient/8f1ad3e5cb1265100316.bundle.js",
-    "/AntischwitzomatClient/1.5a924ac2842a0d1462cc.bundle.js",
+    "/AntischwitzomatClient/27d4c432e9a42c05f46e.bundle.js",
+    "/AntischwitzomatClient/1.9951564a3fd2c1b82bed.bundle.js",
     "/AntischwitzomatClient/index.html"
   ]
 };
