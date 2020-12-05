@@ -100,7 +100,12 @@ export function createHomeComponent() {
 
         for (var i = 0; i < timeLabelCount; i++) {
             const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
-            timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
+            //timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
+
+
+            let format = new Intl.DateTimeFormat(["de-AT"], { hour: "2-digit", minute: "2-digit" });
+            let text = format.format(new Date(labelDate));
+            timeLabels.push(text);
         }
 
         // var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
