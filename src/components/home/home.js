@@ -225,7 +225,7 @@ export function createHomeComponent() {
         let tempPrefix = "";
         if (temp < 10 && temp >= 0) tempPrefix = " "
 
-        const tempGauge = new Gauge(tempDiv, tempPrefix, temp, "°", 5, 40, "#fff", "#000");
+        const tempGauge = new Gauge(tempDiv, tempPrefix, temp, "°", -10, 40, "#fff", "#000");
         tempGauge.animateValue(temp, 800);
         const humGauge = new Gauge(humDiv, " ", hum, "% ", 30, 99, "#fff", "#000");
         humGauge.animateValue(hum, 800);
