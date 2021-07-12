@@ -143,6 +143,8 @@ export function createNotification(text, room1, room2, type, amount, value) {
     });
 }
 
+
+
 export function getRoomMeasurements(after) {
     let userId = getUserId();
     if (null == userId) {
