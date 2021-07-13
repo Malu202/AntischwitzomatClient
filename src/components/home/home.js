@@ -7,6 +7,7 @@ import {
     from "../../environment";
 
 import {
+    getCurrentRoomMeasurements,
     getRoomMeasurements
 }
 
@@ -14,8 +15,28 @@ import {
 
 function startOfToday() {
     let date = new Date();
-    date.setHours(0,0,0);
+    date.setHours(0, 0, 0);
     return date;
+}
+
+const timeFormat = new Intl.DateTimeFormat(["de-AT"], { hour: "2-digit", minute: "2-digit" });
+
+function formatTimeForGauge(time) {
+    return time.toLocaleTimeString().slice(0, -3);
+}
+
+const voltageMin = 2;
+const voltageMax = 3.2;
+const voltageMinDigital = (1024 / voltageMax) * voltageMin;
+
+function convertVoltage(v) {
+    if (v == 0) {
+        return 0;
+    }
+    if (v != null) {
+        return ((v - voltageMinDigital) / (1024 - voltageMinDigital)) * 100;
+    }
+    return null;
 }
 
 export function createHomeComponent() {
@@ -38,8 +59,9 @@ export function createHomeComponent() {
     let roomIds = [];
     var plottedValue = 0;
 
-    getRoomMeasurements(startOfToday()).then(rooms => {
+    let currentRoomMeasurementsTask = getCurrentRoomMeasurements();
 
+    getRoomMeasurements(startOfToday()).then(rooms => {
         let roomcount = Object.keys(rooms).length;
         roomIds = Object.keys(rooms);
         if (roomcount == 0) return;
@@ -58,28 +80,22 @@ export function createHomeComponent() {
             station.name = rooms[roomIds[j]].name;
             let measurements = rooms[roomIds[j]].measurements;
 
-            let voltageMin = 2;
-            let voltageMax = 3.2;
-            let voltageMinDigital = (1024 / voltageMax) * voltageMin;
+
             for (var i = 0; i < measurements.length; i++) {
                 const date = (new Date(measurements[i].time));
                 station.times.push((date.getTime() / 1000));
                 station.temps.push(measurements[i].temperature);
                 station.hums.push(measurements[i].humidity);
                 station.press.push(measurements[i].pressure);
-
-                let voltageDigital = measurements[i].voltage;
-                if (voltageDigital == 0) station.vol.push(0)
-                else if (voltageDigital != null) station.vol.push(((voltageDigital - voltageMinDigital) / (1024 - voltageMinDigital)) * 100);
-                else station.vol.push(null);
-                // const time = date.getHours() + ":" + date.getMinutes();
-                // station.timeLabels.push(time);
+                station.vol.push(convertVoltage(measurements[i].voltage));
             }
         }
 
-        for (var i = roomcount - 1; i >= 0; i--) {
-            weatherStations[roomIds[i]].addGaugePanel(i);
-        }
+        currentRoomMeasurementsTask.then(currentRoomMeasurements => {
+            for (var i = roomcount - 1; i >= 0; i--) {
+                weatherStations[roomIds[i]].addGaugePanel(i, currentRoomMeasurements[roomIds[i]].measurements);
+            }
+        });
 
         // for (var i = 0; i < response.length; i += (response.length - 1) || 1) {
         //     const date = (new Date(response[i].time));
@@ -107,9 +123,7 @@ export function createHomeComponent() {
             const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
             //timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
 
-
-            let format = new Intl.DateTimeFormat(["de-AT"], { hour: "2-digit", minute: "2-digit" });
-            let text = format.format(new Date(labelDate));
+            let text = timeFormat.format(new Date(labelDate));
             timeLabels.push(text);
         }
 
@@ -192,23 +206,24 @@ export function createHomeComponent() {
         this.name = "";
     }
 
-    WeatherStation.prototype.addGaugePanel = function (position) {
+    WeatherStation.prototype.addGaugePanel = function (position, currentRoomMeasurements) {
         const tempDiv = gaugePanels[position][0];
         const humDiv = gaugePanels[position][1];
         const pressDiv = gaugePanels[position][2];
         const heading = gaugePanels[position][3];
 
 
-        let battery = this.vol[this.vol.length - 1];
-        if (battery != null) battery = Math.round(battery);
-        var temp = this.temps[this.temps.length - 1];
-        var hum = this.hums[this.hums.length - 1];
-        var press = this.press[this.press.length - 1];
+        let battery = currentRoomMeasurements.voltage;
+        if (battery != null) battery = Math.round(convertVoltage(battery));
+        var temp = currentRoomMeasurements.temperature;
+        var hum = currentRoomMeasurements.humidity;
+        var press = currentRoomMeasurements.pressure;
 
         if (battery == 0 && temp == null && hum == null && press == null) battery = battery = ", <i class='material-icons'>battery_alert</i>" + "Battery empty"; //sensor timeout
         else if (battery != null) battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
         else battery = ""; //external sensor
-        let time = new Date(this.times[this.times.length - 1] * 1000).toLocaleTimeString().slice(0, -3);
+
+        let time = formatTimeForGauge(new Date(currentRoomMeasurements.time));
         heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ")</span";
 
         //Just for mockup:

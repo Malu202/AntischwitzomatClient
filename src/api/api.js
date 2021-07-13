@@ -156,3 +156,15 @@ export function getRoomMeasurements(after) {
         }
     }).then(res => res.json());
 }
+
+export function getCurrentRoomMeasurements() {
+    let userId = getUserId();
+    if (null == userId) {
+        return Promise.resolve([]);
+    }
+    return fetch(`${environment.API_URL}currentroommeasurements?user_id=${getUserId()}`, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(res => res.json());
+}
