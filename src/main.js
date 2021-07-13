@@ -14,7 +14,6 @@ router.run();
 convertLinks(document.querySelectorAll("a"), router);
 document.querySelector("#home-button").addEventListener("click", () => router.navigate(""));
 
-
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
         runtime.register().then(function (registration) {
@@ -27,3 +26,13 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+
+let lastFocusTime;
+function focus() {
+    if (!lastFocusTime || ((new Date()).getTime() - lastFocusTime) > 5000) {
+        lastFocusTime = (new Date()).getTime();    
+        router.navigate("", "Antischwitzomat", true);
+    }
+}
+window.addEventListener("focus", focus);
+document.addEventListener("focus", focus);
