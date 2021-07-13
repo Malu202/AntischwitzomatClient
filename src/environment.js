@@ -1,6 +1,6 @@
 let API_URL = "https://antischwitzomat.glitch.me/";
 if (__ENVIRONMENT == "local") {
-    // API_URL = "http://127.0.0.1:61909/";
+    API_URL = "http://127.0.0.1:64138/";
 }
 
 export const environment = {

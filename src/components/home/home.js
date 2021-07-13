@@ -11,7 +11,12 @@ import {
 }
 
     from "../../api/api";
-import { startOfToday, addHours } from "date-fns";
+
+function startOfToday() {
+    let date = new Date();
+    date.setHours(0,0,0);
+    return date;
+}
 
 export function createHomeComponent() {
     let div = document.createElement("div");
@@ -33,7 +38,7 @@ export function createHomeComponent() {
     let roomIds = [];
     var plottedValue = 0;
 
-    getRoomMeasurements(addHours(startOfToday(), 4)).then(rooms => {
+    getRoomMeasurements(startOfToday()).then(rooms => {
 
         let roomcount = Object.keys(rooms).length;
         roomIds = Object.keys(rooms);

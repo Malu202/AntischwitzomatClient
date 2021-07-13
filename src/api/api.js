@@ -150,7 +150,7 @@ export function getRoomMeasurements(after) {
     if (null == userId) {
         return Promise.resolve([]);
     }
-    return fetch(`${environment.API_URL}roomMeasurements?user_id=${getUserId()}&after=${new Date(after).toISOString()}`, {
+    return fetch(`${environment.API_URL}roomMeasurements?user_id=${getUserId()}&after=${after.toISOString()}`, {
         headers: {
             'Accept': 'application/json'
         }

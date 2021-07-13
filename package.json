@@ -34,7 +34,6 @@
     "@material/textfield": "3",
     "@material/top-app-bar": "3",
     "@material/typography": "3",
-    "date-fns": "^2.16.1",
     "route-it": "^1.1.0"
   }
 }
