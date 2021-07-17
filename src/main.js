@@ -8,6 +8,7 @@ import "../site.webmanifest";
 import { environment } from "./environment";
 import { convertLinks } from "./components/convert-links";
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+import { updatePushSubscriptionEndpoint } from "./api/api";
 
 let router = new Router(new RouteResolver(), new ContainerRouteRenderer(document.getElementById("content")));
 router.run();
@@ -27,11 +28,17 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+updatePushSubscriptionEndpoint();
 let lastFocusTime;
+let lastPushUpdateTime;
 function focus() {
     if (!lastFocusTime || ((new Date()).getTime() - lastFocusTime) > 5000) {
-        lastFocusTime = (new Date()).getTime();    
+        lastFocusTime = (new Date()).getTime();
         router.navigate("", "Antischwitzomat", true);
+    }
+    if (!lastPushUpdateTime || ((new Date()).getTime() - lastPushUpdateTime) > 60 * 1000) {
+        lastPushUpdateTime = (new Date()).getTime();
+        updatePushSubscriptionEndpoint();
     }
 }
 window.addEventListener("focus", focus);

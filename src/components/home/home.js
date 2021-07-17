@@ -113,7 +113,7 @@ export function createHomeComponent() {
             if (stationsEarliestMeasurement < earliestMeasurement) earliestMeasurement = stationsEarliestMeasurement;
             if (stationsLatestMeasurement > latestMeasurement) latestMeasurement = stationsLatestMeasurement;
         }
-
+        if (earliestMeasurement == Infinity || latestMeasurement == 0) { return; }
         let plottedTime = (latestMeasurement - earliestMeasurement) * 1000;
 
         const stepSize = plottedTime / (timeLabelCount - 1);
@@ -122,7 +122,6 @@ export function createHomeComponent() {
         for (var i = 0; i < timeLabelCount; i++) {
             const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
             //timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
-
             let text = timeFormat.format(new Date(labelDate));
             timeLabels.push(text);
         }

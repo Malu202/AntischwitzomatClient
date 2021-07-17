@@ -168,3 +168,25 @@ export function getCurrentRoomMeasurements() {
         }
     }).then(res => res.json());
 }
+
+export function updatePushSubscriptionEndpoint() {
+    let userId = getUserId();
+    if (null == userId) {
+        return Promise.resolve();
+    }
+    return getPushSubscription()
+        .then(keys => {
+            let pushNotificationKeys = JSON.parse(JSON.stringify(keys));
+            fetch(`${environment.API_URL}pushSubscriptionUpdate`, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    update: pushNotificationKeys
+                })
+            }).then(res => res.json());
+        });
+}
