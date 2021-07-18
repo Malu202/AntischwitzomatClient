@@ -170,13 +170,14 @@ export function getCurrentRoomMeasurements() {
 }
 
 let latestPushSubscriptionUpdate = null;
-export function updatePushSubscriptionEndpoint() {
-    if (Notification.permission !== "granted") return;
+export async function updatePushSubscriptionEndpoint() {
+    if (Notification.permission !== "granted") Promise.resolve();
 
     let userId = getUserId();
     if (null == userId) {
         return Promise.resolve();
     }
+    await navigator.serviceWorker.ready;
     return getPushSubscription()
         .then(keys => {
             let pushNotificationKeys = JSON.parse(JSON.stringify(keys));

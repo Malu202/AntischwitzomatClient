@@ -20,6 +20,7 @@ if ('serviceWorker' in navigator) {
         runtime.register().then(function (registration) {
             // Registration was successful
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
             // setupPushNotifications(registration);
         }, function (err) {
             // registration failed :(
@@ -28,8 +29,8 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-updatePushSubscriptionEndpoint();
 let lastFocusTime;
+updatePushSubscriptionEndpoint();
 function focus() {
     if (!lastFocusTime || ((new Date()).getTime() - lastFocusTime) > 5000) {
         lastFocusTime = (new Date()).getTime();
