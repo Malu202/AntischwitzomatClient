@@ -30,16 +30,12 @@ if ('serviceWorker' in navigator) {
 
 updatePushSubscriptionEndpoint();
 let lastFocusTime;
-let lastPushUpdateTime;
 function focus() {
     if (!lastFocusTime || ((new Date()).getTime() - lastFocusTime) > 5000) {
         lastFocusTime = (new Date()).getTime();
         router.navigate("", "Antischwitzomat", true);
     }
-    if (!lastPushUpdateTime || ((new Date()).getTime() - lastPushUpdateTime) > 60 * 1000) {
-        lastPushUpdateTime = (new Date()).getTime();
-        updatePushSubscriptionEndpoint();
-    }
+    updatePushSubscriptionEndpoint();
 }
 window.addEventListener("focus", focus);
 document.addEventListener("focus", focus);

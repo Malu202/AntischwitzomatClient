@@ -169,7 +169,10 @@ export function getCurrentRoomMeasurements() {
     }).then(res => res.json());
 }
 
+let latestPushSubscriptionUpdate = null;
 export function updatePushSubscriptionEndpoint() {
+    if (Notification.permission !== "granted") return;
+
     let userId = getUserId();
     if (null == userId) {
         return Promise.resolve();
@@ -177,6 +180,10 @@ export function updatePushSubscriptionEndpoint() {
     return getPushSubscription()
         .then(keys => {
             let pushNotificationKeys = JSON.parse(JSON.stringify(keys));
+            if (JSON.stringify(pushNotificationKeys) == JSON.stringify(latestPushSubscriptionUpdate)) {
+                console.log("Push Notification Subscription did not change since App start. Not updating again.")
+                return;
+            }
             fetch(`${environment.API_URL}pushSubscriptionUpdate`, {
                 method: "POST",
                 headers: {
@@ -187,6 +194,9 @@ export function updatePushSubscriptionEndpoint() {
                     user_id: userId,
                     update: pushNotificationKeys
                 })
-            }).then(res => res.json());
+            }).then(res => res.json())
+                .then(res => {
+                    if (res.error == null) latestPushSubscriptionUpdate = pushNotificationKeys;
+                });
         });
 }
