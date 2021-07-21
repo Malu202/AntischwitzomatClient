@@ -54,15 +54,22 @@ self.addEventListener("push", event => {
     );
 });
 
+
+function cleanRootUrl(u) {
+    if (u.length > 1 && u[u.length-1] == "/") {
+        return u.substring(0, u.length-1);
+    }
+    return u;
+}
+
 self.addEventListener("notificationclick", event => {
     const rootUrl = new URL(__BASEURL, location).href;
     event.notification.close();
     event.waitUntil(clients.matchAll().then(matchedClients => {
         for (let client of matchedClients) {
             console.log(`comparing client url ${client.url} with ${rootUrl}`);
-            if (client.url === rootUrl) {
+            if ((client.url|| "").startsWith(cleanRootUrl(rootUrl))) {
                 return client.focus();
-
             }
         }
         console.log(`opening ${__BASEURL}`);
