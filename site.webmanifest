@@ -9,7 +9,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "./AntischwitzomatClient",
+    "start_url": "/AntischwitzomatClient/",
     "display": "standalone",
     "theme_color": "#4f93ff",
     "background_color": "#ffffff"
