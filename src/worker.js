@@ -59,10 +59,13 @@ self.addEventListener("notificationclick", event => {
     event.notification.close();
     event.waitUntil(clients.matchAll().then(matchedClients => {
         for (let client of matchedClients) {
+            console.log(`comparing client url ${client.url} with ${rootUrl}`);
             if (client.url === rootUrl) {
                 return client.focus();
+
             }
         }
+        console.log(`opening ${__BASEURL}`);
         return clients.openWindow(__BASEURL);
     })
     );

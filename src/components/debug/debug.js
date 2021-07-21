@@ -45,14 +45,17 @@ export class DebugComponent extends HTMLElement {
             this.loadAllLogsButton.parentNode.removeChild(this.loadAllLogsButton);
             this.refresh();
         });
-        this.testNotificationButton.addEventListener("click", () => {
+        this.testNotificationButton.addEventListener("click", async () => {
             const title = 'Antischwitzomat';
             const options = {
                 body: "Test",
                 icon: 'favicons/android-chrome-192x192.png',
                 badge: 'favicons/android-chrome-192x192.png'
             };
-            new Notification(title, options);       
+            let reg = await navigator.serviceWorker.getRegistration();
+            reg.showNotification(title,options);
+            // new Notification(title, options);    
+
         });
     }
 
