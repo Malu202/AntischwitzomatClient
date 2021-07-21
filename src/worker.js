@@ -55,7 +55,17 @@ self.addEventListener("push", event => {
 });
 
 self.addEventListener("notificationclick", event => {
-    event.waitUntil(clients.openWindow("/AntischwitzomatClient"));
+    const rootUrl = new URL('/', location).href;
+    event.notification.close();
+    event.waitUntil(clients.matchAll().then(matchedClients => {
+        for (let client of matchedClients) {
+            if (client.url === rootUrl) {
+                return client.focus();
+            }
+        }
+        return clients.openWindow("/");
+    })
+    );
 });
 
 
