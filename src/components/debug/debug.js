@@ -24,6 +24,7 @@ export class DebugComponent extends HTMLElement {
         this.deleteButton = this.querySelector("#delete");
         this.sensor_id = this.querySelector("#sensor_id");
         this.loadAllLogsButton = this.querySelector("#loadAllLogsButton");
+        this.testNotificationButton = this.querySelector("#test-notification");
         this.refresh();
 
         // this.deleteButton.addEventListener("click", () =>
@@ -43,7 +44,16 @@ export class DebugComponent extends HTMLElement {
             measurementLogLength = Infinity;
             this.loadAllLogsButton.parentNode.removeChild(this.loadAllLogsButton);
             this.refresh();
-        })
+        });
+        this.testNotificationButton.addEventListener("click", () => {
+            const title = 'Antischwitzomat';
+            const options = {
+                body: "Test",
+                icon: 'favicons/android-chrome-192x192.png',
+                badge: 'favicons/android-chrome-192x192.png'
+            };
+            new Notification(title, options);       
+        });
     }
 
     refresh() {
