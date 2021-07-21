@@ -6,6 +6,8 @@ import {
     deleteDatabase
 } from "../../api/api";
 
+let measurementLogLength = 5000;
+
 export class DebugComponent extends HTMLElement {
 
     constructor() {
@@ -21,6 +23,7 @@ export class DebugComponent extends HTMLElement {
         this.sendButton = this.querySelector("#send");
         this.deleteButton = this.querySelector("#delete");
         this.sensor_id = this.querySelector("#sensor_id");
+        this.loadAllLogsButton = this.querySelector("#loadAllLogsButton");
         this.refresh();
 
         // this.deleteButton.addEventListener("click", () =>
@@ -36,6 +39,11 @@ export class DebugComponent extends HTMLElement {
                 this.pres.value).then(() =>
                     this.refresh());
         });
+        this.loadAllLogsButton.addEventListener("click", () => {
+            measurementLogLength = Infinity;
+            this.loadAllLogsButton.parentNode.removeChild(this.loadAllLogsButton);
+            this.refresh();
+        })
     }
 
     refresh() {
@@ -62,7 +70,9 @@ export class DebugComponent extends HTMLElement {
             var tbody = document.createElement("tbody");
             table.appendChild(thead);
             table.appendChild(tbody);
-            for (var i = response.length - 1; i >= 0; i--) {
+            let oldestMsgToShow = response.length - measurementLogLength;
+            if (oldestMsgToShow < 0) oldestMsgToShow = 0;
+            for (var i = response.length - 1; i >= oldestMsgToShow; i--) {
                 let row = document.createElement("tr");
                 tbody.appendChild(row);
                 let createCell = (value) => {
