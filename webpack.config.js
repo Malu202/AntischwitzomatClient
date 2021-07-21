@@ -91,7 +91,8 @@ module.exports = (env, argv) => {
                 publicPath: base
             }),
             new DefinePlugin({
-                __ENVIRONMENT: environment
+                __ENVIRONMENT: environment,
+                __BASEURL: `'${base}'`
             })
         ],
         mode: "development",
