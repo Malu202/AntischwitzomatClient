@@ -6,7 +6,7 @@ import {
     deleteDatabase
 } from "../../api/api";
 
-let measurementLogLength = 5000;
+let measurementLogLength = 500;
 
 export class DebugComponent extends HTMLElement {
 
