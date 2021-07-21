@@ -55,7 +55,7 @@ self.addEventListener("push", event => {
 });
 
 self.addEventListener("notificationclick", event => {
-    const rootUrl = new URL('/', location).href;
+    const rootUrl = new URL(__BASEURL, location).href;
     event.notification.close();
     event.waitUntil(clients.matchAll().then(matchedClients => {
         for (let client of matchedClients) {
@@ -63,7 +63,7 @@ self.addEventListener("notificationclick", event => {
                 return client.focus();
             }
         }
-        return clients.openWindow("/AntischwitzomatClient");
+        return clients.openWindow(__BASE_URL);
     })
     );
 });
