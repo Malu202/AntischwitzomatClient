@@ -63,7 +63,7 @@ self.addEventListener("notificationclick", event => {
                 return client.focus();
             }
         }
-        return clients.openWindow(__BASE_URL);
+        return clients.openWindow(__BASEURL);
     })
     );
 });
