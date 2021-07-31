@@ -106,10 +106,25 @@ i.material-icons {
     flex: 1 1 auto;
 }
 
-#plotHeading {
+#plottedValueLabel {
     text-align: center;
     user-select: none;
-    margin-bottom: 0px;
+    position: absolute;
+    left: 16px;
+
+}
+
+#plotHeading {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.dayNavigationButton {
+    line-height: 32px;
+    cursor: pointer;
 }
 
 #notifications>*,
@@ -217,4 +232,14 @@ select option {
 
 #loadAllLogsButton {
     margin: 16px;
+}
+
+#plotTimeframeSelection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#nextDay {
+    visibility: hidden;
 }

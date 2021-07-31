@@ -18,6 +18,11 @@ function startOfToday() {
     date.setHours(0, 0, 0);
     return date;
 }
+function sameDay(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate();
+}
 
 const timeFormat = new Intl.DateTimeFormat(["de-AT"], { hour: "2-digit", minute: "2-digit" });
 
@@ -40,16 +45,21 @@ function convertVoltage(v) {
 }
 
 export function createHomeComponent() {
-    let div = document.createElement("div");
-    div.id = "dashboard";
-    div.innerHTML = template;
+    let dashboard = document.createElement("div");
+    dashboard.id = "dashboard";
+    dashboard.innerHTML = template;
 
     // var ids = ["esp"];
     // ids = [0];
 
-    const log = div.querySelector("#output");
-    const tempCanvas = div.querySelector("#tempPlot");
-    const tempCard = div.querySelector("#tempCard");
+    const log = dashboard.querySelector("#output");
+    const tempCanvas = dashboard.querySelector("#tempPlot");
+    const tempCard = dashboard.querySelector("#tempCard");
+    const plottedValueLabel = dashboard.querySelector("#plottedValueLabel");
+    const previousDay = dashboard.querySelector("#previousDay");
+    const nextDay = dashboard.querySelector("#nextDay");
+    const currentDayLabel = dashboard.querySelector("#currentDayLabel");
+
 
 
     const weatherStations = {};
@@ -59,94 +69,112 @@ export function createHomeComponent() {
     let roomIds = [];
     var plottedValue = 0;
 
-    let currentRoomMeasurementsTask = getCurrentRoomMeasurements();
+    let plottedDate = startOfToday();
+    plottedDate = new Date("07/17/2021");
+    loadAndDrawPlots(plottedDate);
 
-    getRoomMeasurements(startOfToday()).then(rooms => {
-        let roomcount = Object.keys(rooms).length;
-        roomIds = Object.keys(rooms);
-        if (roomcount == 0) return;
+    nextDay.addEventListener("click", (e) => {
+        plottedDate = offsetByNDays(plottedDate, 1);
+        if (offsetByNDays(plottedDate, 1) > new Date()) nextDay.style.visibility = "hidden";
 
-        addPanels(roomcount);
+        drawSelectedDay();
+        e.stopPropagation();
+    });
+    previousDay.addEventListener("click", (e) => {
+        nextDay.style.visibility = "visible";
+        plottedDate = offsetByNDays(plottedDate, -1);
 
-        for (var i = 0; i < roomcount; i++) {
-            weatherStations[roomIds[i]] = new WeatherStation();
-        }
-
-        for (var j = 0; j < roomcount; j++) {
-            const station = weatherStations[roomIds[j]];
-            // const station = weatherStations[response[i].sensor_id];
-            if (station == undefined) continue;
-
-            station.name = rooms[roomIds[j]].name;
-            let measurements = rooms[roomIds[j]].measurements;
-
-
-            for (var i = 0; i < measurements.length; i++) {
-                const date = (new Date(measurements[i].time));
-                station.times.push((date.getTime() / 1000));
-                station.temps.push(measurements[i].temperature);
-                station.hums.push(measurements[i].humidity);
-                station.press.push(measurements[i].pressure);
-                station.vol.push(convertVoltage(measurements[i].voltage));
-            }
-        }
-
-        currentRoomMeasurementsTask.then(currentRoomMeasurements => {
-            for (var i = roomcount - 1; i >= 0; i--) {
-                weatherStations[roomIds[i]].addGaugePanel(i, currentRoomMeasurements[roomIds[i]].measurements);
-            }
-        });
-
-        // for (var i = 0; i < response.length; i += (response.length - 1) || 1) {
-        //     const date = (new Date(response[i].time));
-        //     const time = date.getHours() + ":" + date.getMinutes();
-        //     weatherStations[ids[0]].timeLabels.push(time);
-        // }
-
-        const timeLabelCount = 4;
-        let earliestMeasurement = Infinity;
-        let latestMeasurement = 0;
-
-        for (let i = 0; i < roomcount; i++) {
-            let stationsEarliestMeasurement = weatherStations[roomIds[i]].times[0];
-            let stationsLatestMeasurement = weatherStations[roomIds[i]].times[weatherStations[roomIds[i]].times.length - 1];
-            if (stationsEarliestMeasurement < earliestMeasurement) earliestMeasurement = stationsEarliestMeasurement;
-            if (stationsLatestMeasurement > latestMeasurement) latestMeasurement = stationsLatestMeasurement;
-        }
-        if (earliestMeasurement == Infinity || latestMeasurement == 0) { return; }
-        let plottedTime = (latestMeasurement - earliestMeasurement) * 1000;
-
-        const stepSize = plottedTime / (timeLabelCount - 1);
-        let timeLabels = [];
-
-        for (var i = 0; i < timeLabelCount; i++) {
-            const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
-            //timeLabels.push(labelDate.getHours() + ":" + labelDate.getMinutes());
-            let text = timeFormat.format(new Date(labelDate));
-            timeLabels.push(text);
-        }
-
-        // var plottableValues = [weatherStations[roomIds[0]].temps, weatherStations[roomIds[0]].hums, weatherStations[roomIds[0]].press];
-        let plottableValues = ["temps", "hums", "press", "vol"];
-        let headlines = ["Temperature", "Humidity", "Pressure", "Voltage"];
-        let colors = ["#4caf50", "#0077c2", "#9c64a6", "#018786"];
-        let shadowColors = ["#80e27e", "#42a5f5", "#ce93d8", "#03DAC6"];
-
-
-
-        var suffixes = ['° ', '% ', '', '% '];
-
-        tempCard.onclick = function () {
-            plottedValue++;
-            if (plottedValue > plottableValues.length - 1) plottedValue = 0;
-            createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue], colors[plottedValue], shadowColors[plottedValue], headlines[plottedValue])
-        }
-
-        plottedValue = plottableValues.length - 1;
-        tempCard.click();
+        drawSelectedDay();
+        e.stopPropagation();
+    });
+    function drawSelectedDay() {
+        if (!sameDay(plottedDate, startOfToday())) currentDayLabel.innerText = plottedDate.toLocaleDateString();
+        else currentDayLabel.innerText = "Today";
+        loadAndDrawPlots(plottedDate, offsetByNDays(plottedDate, 1));
     }
 
-    );
+    function offsetByNDays(date, N) {
+        let newDate = new Date(date);
+        return new Date(newDate.setDate(date.getDate() + N));
+    };
+
+    function loadAndDrawPlots(start, end) {
+        getRoomMeasurements(start, end).then(rooms => {
+            let roomcount = Object.keys(rooms).length;
+            roomIds = Object.keys(rooms);
+            if (roomcount == 0) return;
+
+            addEmptyPanels(roomcount);
+
+            for (var i = 0; i < roomcount; i++) {
+                weatherStations[roomIds[i]] = new WeatherStation();
+            }
+
+            for (var j = 0; j < roomcount; j++) {
+                const station = weatherStations[roomIds[j]];
+                // const station = weatherStations[response[i].sensor_id];
+                if (station == undefined) continue;
+
+                station.name = rooms[roomIds[j]].name;
+                let measurements = rooms[roomIds[j]].measurements;
+
+
+                for (var i = 0; i < measurements.length; i++) {
+                    const date = (new Date(measurements[i].time));
+                    station.times.push((date.getTime() / 1000));
+                    station.temps.push(measurements[i].temperature);
+                    station.hums.push(measurements[i].humidity);
+                    station.press.push(measurements[i].pressure);
+                    station.vol.push(convertVoltage(measurements[i].voltage));
+                }
+            }
+
+            getCurrentRoomMeasurements().then(currentRoomMeasurements => {
+                for (var i = roomcount - 1; i >= 0; i--) {
+                    weatherStations[roomIds[i]].addGaugePanel(i, currentRoomMeasurements[roomIds[i]].measurements);
+                }
+            });
+
+            const timeLabelCount = 4;
+            let earliestMeasurement = Infinity;
+            let latestMeasurement = 0;
+
+            for (let i = 0; i < roomcount; i++) {
+                let stationsEarliestMeasurement = weatherStations[roomIds[i]].times[0];
+                let stationsLatestMeasurement = weatherStations[roomIds[i]].times[weatherStations[roomIds[i]].times.length - 1];
+                if (stationsEarliestMeasurement < earliestMeasurement) earliestMeasurement = stationsEarliestMeasurement;
+                if (stationsLatestMeasurement > latestMeasurement) latestMeasurement = stationsLatestMeasurement;
+            }
+            if (earliestMeasurement == Infinity || latestMeasurement == 0) { return; }
+            let plottedTime = (latestMeasurement - earliestMeasurement) * 1000;
+
+            const stepSize = plottedTime / (timeLabelCount - 1);
+            let timeLabels = [];
+
+            for (var i = 0; i < timeLabelCount; i++) {
+                const labelDate = new Date(earliestMeasurement * 1000 + stepSize * i);
+                let text = timeFormat.format(new Date(labelDate));
+                timeLabels.push(text);
+            }
+
+            let plottableValues = ["temps", "hums", "press", "vol"];
+            let headlines = ["Temperature", "Humidity", "Pressure", "Voltage"];
+            let colors = ["#4caf50", "#0077c2", "#9c64a6", "#018786"];
+            let shadowColors = ["#80e27e", "#42a5f5", "#ce93d8", "#03DAC6"];
+
+            var suffixes = ['° ', '% ', '', '% '];
+
+            tempCard.onclick = function () {
+                plottedValue++;
+                if (plottedValue > plottableValues.length - 1) plottedValue = 0;
+                createPlot(weatherStations, plottableValues[plottedValue], timeLabels, suffixes[plottedValue], colors[plottedValue], shadowColors[plottedValue], headlines[plottedValue])
+            }
+
+            plottedValue = plottableValues.length - 1;
+            tempCard.click();
+        });
+    };
+
     var plot;
 
     function createPlot(weatherStations, value, timeLabels, sf, color, shadowColor, headline) {
@@ -172,7 +200,7 @@ export function createHomeComponent() {
         }
 
         tempCanvas.parentElement.style.background = color;
-        tempCanvas.parentElement.firstElementChild.innerText = headline;
+        plottedValueLabel.innerText = headline;
 
         plot = new Plot(tempCanvas, {
             backgroundColor: color,
@@ -218,11 +246,13 @@ export function createHomeComponent() {
         var hum = currentRoomMeasurements.humidity;
         var press = currentRoomMeasurements.pressure;
 
-        if (battery == 0 && temp == null && hum == null && press == null) battery = battery = ", <i class='material-icons'>battery_alert</i>" + "Battery empty"; //sensor timeout
+        let batteryEmpty = battery == 0 && temp == null && hum == null && press == null;
+        if (batteryEmpty) battery = battery = ", <i class='material-icons'>battery_alert</i>" + "Battery empty"; //sensor timeout
         else if (battery != null) battery = ", <i class='material-icons'>battery_std</i>" + battery + "%";
         else battery = ""; //external sensor
 
         let time = formatTimeForGauge(new Date(currentRoomMeasurements.time));
+        if (batteryEmpty) time = (new Date(currentRoomMeasurements.time)).toLocaleDateString();
         heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ")</span";
 
         //Just for mockup:
@@ -252,13 +282,14 @@ export function createHomeComponent() {
         pressGauge.animateValue(press, 800);
     }
 
-    function addPanels(amount) {
-        const cardBlueprint = div.querySelector('#gaugeCard');
-        const headingBlueprint = div.querySelector("#heading");
-        const gaugesBlueprint = div.querySelector("#gauges");
-        const tempGaugeBlueprint = div.querySelector("#tempGauge");
-        const humGaugeBlueprint = div.querySelector("#humGauge");
-        const presGaugeBlueprint = div.querySelector("#presGauge");
+    function addEmptyPanels(amount) {
+        if (gaugePanels.length > 0) return dashboard;
+        const cardBlueprint = dashboard.querySelector('#gaugeCard');
+        const headingBlueprint = dashboard.querySelector("#heading");
+        const gaugesBlueprint = dashboard.querySelector("#gauges");
+        const tempGaugeBlueprint = dashboard.querySelector("#tempGauge");
+        const humGaugeBlueprint = dashboard.querySelector("#humGauge");
+        const presGaugeBlueprint = dashboard.querySelector("#presGauge");
 
         for (var i = 0; i < amount; i++) {
             const parent = document.createElement("div");
@@ -285,7 +316,7 @@ export function createHomeComponent() {
 
             parent.appendChild(heading);
             parent.appendChild(gaugesDiv);
-            div.insertBefore(parent, div.firstChild);
+            dashboard.insertBefore(parent, dashboard.firstChild);
 
             const gaugePanel = [tempDiv,
                 humDiv,
@@ -295,5 +326,5 @@ export function createHomeComponent() {
         }
     }
 
-    return div;
+    return dashboard;
 }

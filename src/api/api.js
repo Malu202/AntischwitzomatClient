@@ -145,12 +145,14 @@ export function createNotification(text, room1, room2, type, amount, value) {
 
 
 
-export function getRoomMeasurements(after) {
+export function getRoomMeasurements(after, before) {
     let userId = getUserId();
     if (null == userId) {
         return Promise.resolve([]);
     }
-    return fetch(`${environment.API_URL}roomMeasurements?user_id=${getUserId()}&after=${after.toISOString()}`, {
+    let query = `${environment.API_URL}roomMeasurements?user_id=${getUserId()}&after=${after.toISOString()}`;
+    if (before) query += `&before=${before.toISOString()}`
+    return fetch(query, {
         headers: {
             'Accept': 'application/json'
         }
