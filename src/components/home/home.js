@@ -70,7 +70,6 @@ export function createHomeComponent() {
     var plottedValue = 0;
 
     let plottedDate = startOfToday();
-    plottedDate = new Date("07/17/2021");
     loadAndDrawPlots(plottedDate);
 
     nextDay.addEventListener("click", (e) => {
