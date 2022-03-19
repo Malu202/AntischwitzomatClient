@@ -9,8 +9,12 @@ fs.readFile('./configs/dataFormat.json', 'utf8', (err, formatData) => {
     let format = JSON.parse(formatData);
 
     fs.readdir("./configs/sensors", (err, files) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
         for (let f of files) {
-            fs.readFile(path.join("./configs/sensors",  f), 'utf8', (err, configData) => {
+            fs.readFile(path.join("./configs/sensors", f), 'utf8', (err, configData) => {
                 if (err) {
                     console.error(err)
                     return
@@ -89,11 +93,3 @@ function createBinaryData(configJSON, format) {
 
     return configArray;
 }
-
-// fs.writeFile('/Users/joe/test.txt', content, err => {
-//     if (err) {
-//         console.error(err)
-//         return
-//     }
-//     //file written successfully
-// })
