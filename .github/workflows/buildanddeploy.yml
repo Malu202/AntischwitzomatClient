@@ -23,6 +23,7 @@ jobs:
     - run: npm run build -- -p --env.githubpages
     - run: cp dist/index.html dist/404.html
     - run: npm run build-sensor-configs
+    - run: cp sensor*.bmp dist/
     - name: Install SSH Client 🔑
       uses: webfactory/ssh-agent@v0.4.1
       with:
