@@ -1,0 +1,48 @@
+[
+    {
+        "value": "TEMPERATURE_DIFF",
+        "size": 16,
+        "unsigned": true
+    },
+    {
+        "value": "HUMIDITY_DIFF",
+        "size": 16,
+        "unsigned": true
+    },
+    {
+        "value": "PRESSURE_DIFF",
+        "size": 16,
+        "unsigned": true
+    },
+    {
+        "value": "BATTERY_DIFF",
+        "size": 16,
+        "unsigned": true
+    },
+    {
+        "value": "MAX_COUNT",
+        "size": 8,
+        "unsigned": true
+    },
+    {
+        "value": "TEMPERATURE_CALIBRATION_OFFSET",
+        "size": 16,
+        "unsigned": false
+    },
+    {
+        "value": "NEXT_MEASUREMENT_SECONDS",
+        "size": 16,
+        "unsigned": false
+    },
+    {
+        "value": "REQUEST_RETRY_INTERVAL",
+        "size": 16,
+        "unsigned": false
+    },
+    {
+        "value": "API_URL",
+        "size": 696,
+        "string": true,
+        "unsigned": true
+    }
+]

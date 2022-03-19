@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build-sensor-configs": "node ./configs/convert.js"
   },
   "devDependencies": {
     "autoprefixer": "^9.8.6",

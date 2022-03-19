@@ -1,0 +1,11 @@
+{
+    "TEMPERATURE_DIFF": 30,
+    "HUMIDITY_DIFF": 400,
+    "PRESSURE_DIFF": 20000,
+    "BATTERY_DIFF": 50,
+    "MAX_COUNT": 8,
+    "TEMPERATURE_CALIBRATION_OFFSET": 21,
+    "NEXT_MEASUREMENT_SECONDS": 900,
+    "REQUEST_RETRY_INTERVAL": 3600,
+    "API_URL": "butler.grapp.workers.dev/?q=https://antischwitzomat.glitch.me/measurements"
+}
