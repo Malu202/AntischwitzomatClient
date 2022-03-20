@@ -7,5 +7,5 @@
     "TEMPERATURE_CALIBRATION_OFFSET": 55,
     "NEXT_MEASUREMENT_SECONDS": 900,
     "REQUEST_RETRY_INTERVAL": 3600,
-    "API_URL": "butler.aschwm.workers.dev"
+    "API_URL": "butler.aschwm.workers.dev/?url=http://antischwitzomat.glitch.me/measurements"
 }
