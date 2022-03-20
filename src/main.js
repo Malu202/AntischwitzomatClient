@@ -32,7 +32,7 @@ if ('serviceWorker' in navigator) {
 let lastFocusTime;
 updatePushSubscriptionEndpoint();
 function focus() {
-    if (!lastFocusTime || ((new Date()).getTime() - lastFocusTime) > 5000) {
+    if (!lastFocusTime || ((new Date()).getTime() - lastFocusTime) > 5000 && window.location.pathname == "/") {
         lastFocusTime = (new Date()).getTime();
         router.navigate("", "Antischwitzomat", true);
     }
