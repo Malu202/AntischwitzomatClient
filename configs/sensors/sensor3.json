@@ -5,6 +5,7 @@
     "BATTERY_DIFF": 50,
     "MAX_COUNT": 8,
     "TEMPERATURE_CALIBRATION_OFFSET": 51,
+    "HUMIDITY_CALIBRATION_OFFSET": 0,
     "NEXT_MEASUREMENT_SECONDS": 900,
     "REQUEST_RETRY_INTERVAL": 3600,
     "API_URL": "butler.aschwm.workers.dev/?url=http://antischwitzomat.glitch.me/measurements"

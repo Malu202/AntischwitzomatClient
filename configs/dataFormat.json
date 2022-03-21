@@ -30,6 +30,11 @@
         "unsigned": false
     },
     {
+        "value": "HUMIDITY_CALIBRATION_OFFSET",
+        "size": 16,
+        "unsigned": false
+    },
+    {
         "value": "NEXT_MEASUREMENT_SECONDS",
         "size": 16,
         "unsigned": false
