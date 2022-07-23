@@ -9,9 +9,9 @@ import {
 import {
     getCurrentRoomMeasurements,
     getRoomMeasurements
-}
+} from "../../api/api";
 
-    from "../../api/api";
+import { utci } from "./utciTemperature"
 
 function startOfToday() {
     let date = new Date();
@@ -252,7 +252,9 @@ export function createHomeComponent() {
 
         let time = formatTimeForGauge(new Date(currentRoomMeasurements.time));
         if (batteryEmpty) time = (new Date(currentRoomMeasurements.time)).toLocaleDateString();
-        heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ")</span";
+        let utciTemperature = utci(temp, 0.5, temp, hum);
+        utciTemperature = Math.round(utciTemperature * 10) / 10;
+        heading.innerHTML = this.name + " <span class='mdc-typography--subtitle2 subsensortext'>(" + time + battery + ") utci: " + utciTemperature + "°C</span";
 
         //Just for mockup:
         // if (this.temps[this.temps.length - 1] == undefined) {
