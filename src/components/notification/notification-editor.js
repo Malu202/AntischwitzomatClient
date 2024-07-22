@@ -1,4 +1,4 @@
-import * as template from "./notification-editor.html";
+import template from "./notification-editor.html";
 import { createNotification, deleteNotification } from "../../api/api";
 
 export const NotificationEditorTagName = "app-notification-editor";

@@ -1,4 +1,4 @@
-import * as template from "./home.html";
+import template from "./home.html";
 
 import {
     environment

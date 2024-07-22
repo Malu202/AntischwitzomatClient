@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 fs.readFile('./configs/dataFormat.json', 'utf8', (err, formatData) => {
     if (err) {

@@ -1,4 +1,4 @@
-import * as template from "./rooms.html";
+import template from "./rooms.html";
 import { RoomEditor, RoomEditorTagName } from "../room/room-editor";
 import { getRooms, getSensors } from "../../api/api";
 

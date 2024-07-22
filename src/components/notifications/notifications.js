@@ -1,4 +1,4 @@
-import * as template from "./notifications.html";
+import template from "./notifications.html";
 import { NotificationEditor, NotificationEditorTagName } from "../notification/notification-editor";
 import { getNotifications, getRooms } from "../../api/api";
 

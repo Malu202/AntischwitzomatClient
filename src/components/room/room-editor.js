@@ -1,4 +1,4 @@
-import * as template from "./room-editor.html";
+import template from "./room-editor.html";
 import { createRoom, deleteRoom } from "../../api/api";
 
 export const RoomEditorTagName = "app-room-editor";

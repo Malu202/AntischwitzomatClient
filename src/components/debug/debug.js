@@ -1,4 +1,4 @@
-import * as template from "./debug.html";
+import template from "./debug.html";
 import { environment } from "../../environment";
 import {
     getMeasurements,
