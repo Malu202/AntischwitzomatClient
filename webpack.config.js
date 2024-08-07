@@ -13,7 +13,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const {DefinePlugin} = webpack;
+const { DefinePlugin } = webpack;
 const MiniCssExtractPluginLoader = MiniCssExtractPlugin.loader;
 
 
@@ -30,11 +30,12 @@ function getRevision() {
 
 export default (env, argv) => {
     const production = argv.mode == "production";
-    const environment = (env ? env.environment : null) || "local";
+    const environment = (env ? env.environment : null) || "local-glitch";
 
     const base = {
         "gh-pages": "/AntischwitzomatClient/",
-        "local": "/"
+        "local": "/",
+        "local-glitch": "/",
     }[environment];
 
     const cacheName = production ? getRevision() : "development";
@@ -103,9 +104,9 @@ export default (env, argv) => {
                 {
                     test: /\.m?js/,
                     resolve: {
-                      fullySpecified: false
+                        fullySpecified: false
                     }
-                  }
+                }
             ],
         },
         resolve: {
@@ -127,7 +128,7 @@ export default (env, argv) => {
                 filename: '[name].[contenthash].css'
             }),
             new CleanWebpackPlugin(),
-            
+
             new CopyPlugin({
                 patterns: [
                     { from: './favicons', to: 'favicons' },
