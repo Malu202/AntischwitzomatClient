@@ -33,7 +33,7 @@ export default (env, argv) => {
     const environment = (env ? env.environment : null) || "local";
 
     const base = {
-        "gh-pages": "/",
+        "gh-pages": "/AntischwitzomatClient/",
         "local": "/"
     }[environment];
 
