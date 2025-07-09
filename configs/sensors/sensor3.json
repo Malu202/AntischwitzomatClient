@@ -8,5 +8,5 @@
     "HUMIDITY_CALIBRATION_OFFSET": 541,
     "NEXT_MEASUREMENT_SECONDS": 900,
     "REQUEST_RETRY_INTERVAL": 3600,
-    "API_URL": "butler.aschwm.workers.dev/?url=http://antischwitzomat.glitch.me/measurements"
+    "API_URL": "http://10.0.0.135:8123/api/webhook/uVkizLrHn59iRCKua5uB"
 }
